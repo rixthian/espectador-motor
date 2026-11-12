@@ -283,6 +283,17 @@ body.eh-item .eh-temas,body.eh-item .eh-hoy,body.eh-item .eh-cita,body.eh-item .
 .eh-art-cab h1{font:800 clamp(30px,4.6vw,46px)/1.12 var(--fh);letter-spacing:-.03em}
 .eh-art-cab::after{background:var(--acento);width:64px;height:4px;border-radius:2px}
 .eh-cargando{font:600 13px var(--fb);letter-spacing:.04em}
+/* === Auditoría 1 === */
+.logo::before{flex:none}
+#hoy:has(#eh-hoy[hidden]){display:none}
+.eh-hoy:has(>[hidden]){grid-template-columns:minmax(0,720px)}
+#eh-busqueda{overflow-x:clip}
+#eh-gcse .gsc-tabHeader,#eh-gcse .gsc-result-info,#eh-gcse .gsc-orderby-label,#eh-gcse .gsc-selected-option{letter-spacing:.02em!important}
+#eh-gcse .gsc-cursor-page{font:600 14px/36px var(--fb)!important}
+.eh-ficha .d,.eh-ficha a,.eh-foto figcaption a{letter-spacing:.04em}
+.eh-filtros select.activo,.eh-avbtn.activo{box-shadow:0 0 0 3px color-mix(in srgb,var(--acento) 25%,transparent)}
+.eh-cargando a{color:var(--acento);text-decoration:underline}
+#eh-app:empty{min-height:190px}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}html{scroll-behavior:auto}}
 @media (max-width:1020px){
   .racimo{grid-template-columns:1fr 1fr}.lista{grid-column:1/-1}
