@@ -1,9 +1,10 @@
-/*! El Espectador de historias · motor modular v1.1
+/*! El Espectador de historias · motor modular v1.2
  * Carga módulos desde este mismo almacén, en una versión fija,
  * y comprueba la huella SHA-384 de cada hoja antes de usarla.
  *
  * En una página:   <div data-eh-modulo="mapoteca"></div>
  * Desde el diseño: EHMotor.cargar('lector')  → Promise
+ * Al arrancar carga siempre: diseno y buscador.
  */
 (function () {
   'use strict';
@@ -16,6 +17,8 @@
   /* Huellas de cada hoja (las escribe herramientas/huellas.py). */
   var HUELLAS = {
     "modulos/aura/aura.js": "sha384-KHD0qGCFBH/BIoHNI3891ocPNG2G4XuD8byvzRAKls4OCRr5hrMsmtryZXf7B0ql",
+    "modulos/buscador/buscador.js": "sha384-yYBAX+TBPZShDJ+y2eJaj8jH6etK015t6RooG7+XlJBuw+OOEUri8KSCT5DBzR9N",
+    "modulos/diseno/diseno.css": "sha384-NH7txxb5nqZBbY5KZwZphU8OQw79TBKJqNEuksutdk9h7GResA7xUCXH2ibP7Qks",
     "modulos/lector/lector.css": "sha384-Eql9MuC/vaCBUOzaugmSOFlAdBmlS1FKp8ga+HnuMbEPwwUvMXFIotYNaFHzqCzA",
     "modulos/lector/lector.js": "sha384-p0INvJlQm617z5ysgyscsElTUNlVagyBxqvRlY6kyu5LTay4uLBHoHJAA9aNzcO3",
     "modulos/mapoteca/mapoteca.css": "sha384-5d9nyiBcNL9Zl/2w/3hSPA3EPd2znfyv17l91C3ygGSLWj8y4BdPIkEQ9fO1NHAq",
@@ -27,8 +30,13 @@
   var MODULOS = {
     mapoteca: { html: 'mapoteca.html', css: 'mapoteca.css', js: 'mapoteca.js' },
     lector:   { css: 'lector.css', js: 'lector.js' },
-    aura:     { js: 'aura.js' }
+    aura:     { js: 'aura.js' },
+    buscador: { js: 'buscador.js' },
+    diseno:   { css: 'diseno.css' }
   };
+
+  /* Módulos que arrancan siempre, en este orden. */
+  var ARRANQUE = ['diseno', 'buscador'];
 
   var cargados = {};
 
@@ -110,8 +118,9 @@
     (raiz || document).querySelectorAll('[data-eh-modulo]').forEach(montar);
   }
 
-  window.EHMotor = { version: '1.1.0', raiz: RAIZ, cargar: cargar, montar: montar, buscar: buscar };
+  window.EHMotor = { version: '1.2.0', raiz: RAIZ, cargar: cargar, montar: montar, buscar: buscar };
   try { document.dispatchEvent(new Event('eh:motor')); } catch (e) {}
+  ARRANQUE.reduce(function (p, n) { return p.then(function () { return cargar(n).catch(function () {}); }); }, Promise.resolve());
   buscar();
   new MutationObserver(function () { buscar(); })
     .observe(document.documentElement, { childList: true, subtree: true });
