@@ -294,6 +294,18 @@ body.eh-item .eh-temas,body.eh-item .eh-hoy,body.eh-item .eh-cita,body.eh-item .
 .eh-filtros select.activo,.eh-avbtn.activo{box-shadow:0 0 0 3px color-mix(in srgb,var(--acento) 25%,transparent)}
 .eh-cargando a{color:var(--acento);text-decoration:underline}
 #eh-app:empty{min-height:190px}
+/* === Buscador propio === */
+.eh-propios{width:min(1180px,94vw);margin:18px auto 0}
+body:not(.eh-res) .eh-propios{display:none}
+.eh-propios h2{margin:0 0 12px;font:800 12px var(--fb);letter-spacing:.07em;text-transform:uppercase;color:var(--acento)}
+.eh-propios .l{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px}
+.eh-propios a{display:grid;grid-template-columns:104px minmax(0,1fr);gap:14px;align-items:center;background:var(--tarjeta);border:1px solid var(--linea);border-radius:var(--radio);padding:10px;transition:border-color .2s,transform .2s}
+.eh-propios a:hover{border-color:var(--acento);transform:translateY(-2px)}
+.eh-propios img{width:100%;aspect-ratio:16/10;object-fit:cover;border-radius:9px;display:block}
+.eh-propios small{display:block;font:700 10.5px var(--fb);letter-spacing:.06em;text-transform:uppercase;color:var(--acento);margin-bottom:2px}
+.eh-propios strong{display:block;font:700 15px/1.3 var(--fh);letter-spacing:-.01em;color:var(--tit)}
+.eh-propios p{margin:4px 0 0;font:400 13px/1.45 var(--fb);color:var(--mut);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.eh-propios p b{color:var(--fg);font-weight:700}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}html{scroll-behavior:auto}}
 @media (max-width:1020px){
   .racimo{grid-template-columns:1fr 1fr}.lista{grid-column:1/-1}
