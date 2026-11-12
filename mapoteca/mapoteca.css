@@ -1,0 +1,59 @@
+.mt{--mt-r:18px;width:min(1240px,96vw);position:relative;left:50%;transform:translateX(-50%);margin:6px 0 40px;color:var(--tinta,#1d2433);font-family:'Cormorant Garamond',Georgia,serif}
+.mt *{box-sizing:border-box}
+.mt-cab{text-align:center;margin:0 auto 22px;max-width:760px}
+.mt-cab small{font:600 12px 'Cinzel',serif;letter-spacing:.3em;text-transform:uppercase;color:var(--oro,#b08d3c)}
+.mt-cab h2{margin:6px 0 4px;font:400 66px/1 'Pinyon Script',cursive;color:var(--azul,#13254a)}
+.mt-cab p{margin:6px 0 0;font:500 19px/1.55 'Cormorant Garamond',serif}
+.mt-app{display:grid;grid-template-columns:310px minmax(0,1fr);gap:16px;align-items:stretch}
+.mt-panel{background:var(--tarjeta,#fff);border:1px solid var(--borde,#e6dcc6);border-radius:var(--mt-r);box-shadow:0 14px 34px var(--sombra,rgba(19,37,74,.12));padding:16px 16px 10px;max-height:78vh;overflow:auto}
+.mt-panel h3{margin:14px 0 8px;font:700 11px 'Cinzel',serif;letter-spacing:.22em;text-transform:uppercase;color:var(--oro,#b08d3c);display:flex;align-items:center;gap:8px}
+.mt-panel h3:first-child{margin-top:2px}
+.mt-panel h3:after{content:'';flex:1;height:1px;background:var(--borde,#e6dcc6)}
+.mt-busca{display:flex;gap:6px}
+.mt-busca input{flex:1;min-width:0;border:1px solid var(--borde,#e6dcc6);background:var(--caja,#fff);color:inherit;border-radius:999px;padding:9px 14px;font:500 16px 'Cormorant Garamond',serif;outline:none}
+.mt-busca input:focus{border-color:var(--oro,#b08d3c)}
+.mt-btn{border:1px solid var(--borde,#e6dcc6);background:var(--caja,#fff);color:var(--azul,#13254a);border-radius:999px;padding:8px 13px;font:600 10.5px 'Cinzel',serif;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;transition:background .2s,color .2s}
+.mt-btn:hover,.mt-btn.on{background:var(--btn,#13254a);color:var(--btnfg,#f3e3b5)}
+.mt-res{list-style:none;margin:6px 0 0;padding:0}
+.mt-res li{padding:6px 8px;border-radius:10px;cursor:pointer;font-size:15px;line-height:1.3}
+.mt-res li:hover{background:var(--borde,#efe6d2)}
+.mt-bases{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.mt-bases .mt-btn{padding:8px 6px}
+.mt-sel{width:100%;border:1px solid var(--borde,#e6dcc6);background:var(--caja,#fff);color:inherit;border-radius:12px;padding:9px 10px;font:500 16px 'Cormorant Garamond',serif}
+.mt-fila{display:flex;align-items:center;gap:10px;margin:8px 0 2px;font:600 10px 'Cinzel',serif;letter-spacing:.12em;text-transform:uppercase;color:var(--gris,#6b7280)}
+.mt-fila input[type=range]{flex:1;accent-color:#b08d3c}
+.mt-nota{font-size:14.5px;line-height:1.45;margin:6px 0 0;color:var(--gris,#6b7280)}
+.mt-nota a{color:var(--oro,#b08d3c)}
+.mt-chk{display:flex;align-items:center;gap:9px;margin:5px 0;font-size:16.5px;cursor:pointer}
+.mt-chk input{accent-color:#b08d3c;width:16px;height:16px}
+.mt-acc{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px}
+.mt-mapa-w{position:relative;border-radius:var(--mt-r);overflow:hidden;border:1px solid var(--oro,#b08d3c);box-shadow:0 18px 44px var(--sombra,rgba(19,37,74,.16));min-height:560px;height:78vh;background:#e9e3d6}
+.mt-mapa{position:absolute;inset:0}
+.mt-coord{position:absolute;left:10px;bottom:30px;z-index:500;background:rgba(255,255,255,.9);color:#13254a;border-radius:999px;padding:4px 10px;font:600 10px 'Cinzel',serif;letter-spacing:.08em;pointer-events:none}
+.mt-swipe{position:absolute;top:0;bottom:0;width:0;z-index:450;pointer-events:none;display:none}
+.mt-swipe:before{content:'';position:absolute;top:0;bottom:0;left:-1px;width:3px;background:#b08d3c;box-shadow:0 0 8px rgba(0,0,0,.35)}
+.mt-swipe span{position:absolute;top:50%;left:-19px;width:38px;height:38px;margin-top:-19px;border-radius:50%;background:#13254a;border:2px solid #b08d3c;color:#f3e3b5;display:flex;align-items:center;justify-content:center;font:700 14px sans-serif;pointer-events:auto;cursor:ew-resize}
+.mt-cargando{position:absolute;top:12px;left:50%;transform:translateX(-50%);z-index:600;background:#13254a;color:#f3e3b5;border-radius:999px;padding:6px 14px;font:600 10px 'Cinzel',serif;letter-spacing:.14em;display:none}
+.mt .leaflet-container{font-family:'Cormorant Garamond',Georgia,serif;font-size:15px}
+.mt .leaflet-popup-content-wrapper{border-radius:14px;background:var(--tarjeta,#fff);color:var(--tinta,#1d2433);box-shadow:0 12px 30px rgba(0,0,0,.25)}
+.mt .leaflet-popup-tip{background:var(--tarjeta,#fff)}
+.mt .leaflet-popup-content{margin:12px 14px;font-size:15.5px;line-height:1.45;min-width:200px}
+.mt-pop small{display:block;font:600 9.5px 'Cinzel',serif;letter-spacing:.16em;text-transform:uppercase;color:#b08d3c;margin-bottom:3px}
+.mt-pop b{display:block;font-size:18px;color:var(--azul,#13254a);line-height:1.2;margin-bottom:4px}
+.mt-pop img{width:100%;border-radius:8px;margin:4px 0 6px;display:block}
+.mt-pop a{color:#b08d3c;font-weight:700}
+.mt-form input,.mt-form textarea,.mt-form select{width:100%;border:1px solid var(--borde,#e6dcc6);background:var(--caja,#fff);color:inherit;border-radius:9px;padding:6px 8px;font:500 15px 'Cormorant Garamond',serif;margin:3px 0 6px}
+.mt-form textarea{min-height:70px;resize:vertical}
+.mt-form .mt-med{font:600 10px 'Cinzel',serif;letter-spacing:.1em;color:#6b5a33;margin-bottom:6px}
+.mt-arts{margin-top:34px}
+.mt-arts h3{text-align:center;margin:0 0 14px;font:700 12.5px 'Cinzel',serif;letter-spacing:.3em;text-transform:uppercase;color:var(--oro,#b08d3c)}
+.mt-arts-g{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:18px}
+.mt-arts-g a{display:block;border-radius:16px;overflow:hidden;border:1px solid var(--borde,#e6dcc6);background:var(--tarjeta,#fff);box-shadow:0 10px 26px var(--sombra,rgba(19,37,74,.1));text-decoration:none;color:inherit;transition:transform .3s}
+.mt-arts-g a:hover{transform:translateY(-3px)}
+.mt-arts-g img{width:100%;aspect-ratio:16/9;object-fit:cover;display:block}
+.mt-arts-g div{padding:12px 16px 16px;font:600 19px/1.25 'Cormorant Garamond',serif;color:var(--azul,#13254a)}
+.mt-creditos{margin:26px auto 0;max-width:900px;text-align:center;font-size:14px;line-height:1.5;color:var(--gris,#6b7280)}
+.mt-creditos a{color:inherit}
+.mt-pleno .mt-mapa-w{height:100vh;border-radius:0}
+@media (max-width:900px){.mt-app{grid-template-columns:1fr}.mt-mapa-w{order:-1;height:64vh;min-height:420px}.mt-panel{max-height:none}.mt-cab h2{font-size:52px}}
+html[data-tema=dark] .mt-coord{background:rgba(20,24,34,.9);color:#e8d9ad}
