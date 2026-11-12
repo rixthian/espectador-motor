@@ -308,9 +308,11 @@ body:not(.eh-res) .eh-propios{display:none}
 .eh-propios p b{color:var(--fg);font-weight:700}
 /* === Artículos, lector y Aura en Moderno === */
 body.eh-item .cab{position:static}
-body.eh-item .eh-cuerpo{--sans:var(--fb);--serif:var(--fb);--accent:var(--acento);--gold:var(--acento);--ink:var(--tit);--ink-2:var(--fg);--muted:var(--mut)}
+body.eh-item .eh-cuerpo{--sans:var(--fb);--serif:var(--fb);--accent:var(--acento);--gold:var(--acento);--ink:var(--fg);--ink-2:var(--fg);--muted:var(--mut)}
 body.eh-item .sbz-lec{--sl-acento:var(--acento);--sl-acento-2:var(--acento);--sl-top:10px}
-body.eh-item .post-body .sbz-lec p{font:400 18px/1.75 var(--fb);color:var(--fg)}
+body.eh-item .post-body .sbz-lec p.sl-n:not(.sl-dek),body.eh-item .post-body .sbz-lec p.sl-capitular{font-size:18px;line-height:1.75}
+body.eh-item .sbz-lec :not(svg):not(svg *){font-family:var(--fb)!important}
+body.eh-item .sbz-lec :is(h1,h2,h3,h4,.sl-cap-t){font-family:var(--fh)!important}
 body.eh-item .post-body .sbz-lec .sl-dek{font:500 20px/1.55 var(--fb);font-style:normal;color:var(--mut)}
 body.eh-item .sbz-lec .sl-cap-t{font:800 28px/1.2 var(--fh);letter-spacing:-.02em;color:var(--tit)}
 body.eh-item .sbz-lec .sl-cap::after{height:4px;background:var(--acento)}
@@ -325,7 +327,7 @@ body.eh-item .sbz-lec h2,body.eh-item .sbz-lec h3,body.eh-item .sbz-lec h4{font-
 body.eh-item .sbz-lec blockquote{font-family:var(--fb)}
 html body #aura,html body #aura .au-op,html body #aura .au-busca input,html body #aura button{font-family:var(--fb)}
 @media (max-width:640px){
-  body.eh-item .post-body .sbz-lec p{font-size:17px;line-height:1.7}
+  body.eh-item .post-body .sbz-lec p.sl-n:not(.sl-dek),body.eh-item .post-body .sbz-lec p.sl-capitular{font-size:17px;line-height:1.7}
   body.eh-item .post-body .sbz-lec .sl-dek{font-size:18px}
   body.eh-item .sbz-lec .sl-cap-t{font-size:23px}
   body.eh-item .post-body .sbz-lec .sl-capitular::first-letter{font-size:54px}
