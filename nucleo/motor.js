@@ -1,10 +1,11 @@
-/*! El Espectador de historias · motor modular v1.2
+/*! El Espectador de historias · motor modular v1.3
  * Carga módulos desde este mismo almacén, en una versión fija,
  * y comprueba la huella SHA-384 de cada hoja antes de usarla.
  *
  * En una página:   <div data-eh-modulo="mapoteca"></div>
  * Desde el diseño: EHMotor.cargar('lector')  → Promise
- * Al arrancar carga siempre: diseno y buscador.
+ * Al arrancar monta el armazón (cabecera, portada y pie) dentro de
+ * #eh-app y #eh-pie, y carga: diseno, buscador y portada.
  */
 (function () {
   'use strict';
@@ -18,12 +19,14 @@
   var HUELLAS = {
     "modulos/aura/aura.js": "sha384-KHD0qGCFBH/BIoHNI3891ocPNG2G4XuD8byvzRAKls4OCRr5hrMsmtryZXf7B0ql",
     "modulos/buscador/buscador.js": "sha384-yYBAX+TBPZShDJ+y2eJaj8jH6etK015t6RooG7+XlJBuw+OOEUri8KSCT5DBzR9N",
-    "modulos/diseno/diseno.css": "sha384-NH7txxb5nqZBbY5KZwZphU8OQw79TBKJqNEuksutdk9h7GResA7xUCXH2ibP7Qks",
+    "modulos/diseno/moderno.css": "sha384-kLlDRm5YmP70FlZv7Fxp0B0b5LBbRWUFZtvKSj6kU+X6mRLEBwGVBqeSYeiE5X55",
     "modulos/lector/lector.css": "sha384-Eql9MuC/vaCBUOzaugmSOFlAdBmlS1FKp8ga+HnuMbEPwwUvMXFIotYNaFHzqCzA",
     "modulos/lector/lector.js": "sha384-p0INvJlQm617z5ysgyscsElTUNlVagyBxqvRlY6kyu5LTay4uLBHoHJAA9aNzcO3",
     "modulos/mapoteca/mapoteca.css": "sha384-5d9nyiBcNL9Zl/2w/3hSPA3EPd2znfyv17l91C3ygGSLWj8y4BdPIkEQ9fO1NHAq",
     "modulos/mapoteca/mapoteca.html": "sha384-w8Kw9g3RYPv8v+wQGvT3Qw+Qj42ed9eFZka4xWdTEF0yU56NUER/uH0VRFsvxOJE",
-    "modulos/mapoteca/mapoteca.js": "sha384-3/xv+8DTsXRiunYU5oqpgS0Belenz7aHZETHflLpm7tQYcyVdIVUKyvkviH/MAF1"
+    "modulos/mapoteca/mapoteca.js": "sha384-3/xv+8DTsXRiunYU5oqpgS0Belenz7aHZETHflLpm7tQYcyVdIVUKyvkviH/MAF1",
+    "modulos/portada/portada.html": "sha384-xli3ZKB97cfZbbMMqbSX1KbmPyry/u/z5E5q7ourYaVCJHwGtouBlDOztbF6AXV+",
+    "modulos/portada/portada.js": "sha384-SCl/xfV+/HzdTy4tbtRSR/zVIdo4HYIg1/M3UdMbSbuqS+IjQQgpWgnak+NhbW7N"
   };
 
   /* Cada módulo vive en su carpeta: modulos/<nombre>/ */
@@ -32,11 +35,12 @@
     lector:   { css: 'lector.css', js: 'lector.js' },
     aura:     { js: 'aura.js' },
     buscador: { js: 'buscador.js' },
-    diseno:   { css: 'diseno.css' }
+    diseno:   { css: 'moderno.css' },
+    portada:  { js: 'portada.js' }
   };
 
-  /* Módulos que arrancan siempre, en este orden. */
-  var ARRANQUE = ['diseno', 'buscador'];
+  /* Módulos que arrancan siempre, en este orden, después del armazón. */
+  var ARRANQUE = ['buscador', 'portada'];
 
   var cargados = {};
 
@@ -95,7 +99,7 @@
   }
 
   function aviso(el, msg) {
-    el.innerHTML = '<p style="text-align:center;font:600 12px Cinzel,serif;letter-spacing:.15em;color:#8a6a22;padding:40px 16px">' +
+    el.innerHTML = '<p style="text-align:center;font:600 13px system-ui,sans-serif;letter-spacing:.04em;color:#5c6370;padding:40px 16px">' +
       'ESTA SECCIÓN NO PUDO CARGARSE · VUELVE A INTENTARLO MÁS TARDE</p>';
     if (window.console) console.warn('[EH motor]', msg);
   }
@@ -105,7 +109,7 @@
     if (el.__eh) return; el.__eh = 1;
     var nombre = el.getAttribute('data-eh-modulo'), m = MODULOS[nombre];
     if (!m) return aviso(el, 'Módulo desconocido: ' + nombre);
-    el.innerHTML = '<p style="text-align:center;font:600 11px Cinzel,serif;letter-spacing:.2em;color:#8a8a8a;padding:60px 16px">CARGANDO…</p>';
+    el.innerHTML = '<p style="text-align:center;font:600 13px system-ui,sans-serif;letter-spacing:.04em;color:#8a8a8a;padding:60px 16px">Cargando…</p>';
     Promise.all([m.html ? texto(ruta(nombre, m.html)) : '', m.css ? estilo(ruta(nombre, m.css)) : null])
       .then(function (r) {
         el.innerHTML = r[0];
@@ -118,9 +122,22 @@
     (raiz || document).querySelectorAll('[data-eh-modulo]').forEach(montar);
   }
 
-  window.EHMotor = { version: '1.2.0', raiz: RAIZ, cargar: cargar, montar: montar, buscar: buscar };
+  /* Armazón de la web: cabecera y portada en #eh-app, pie en #eh-pie. */
+  function armazon() {
+    var app = document.getElementById('eh-app');
+    if (!app) return Promise.resolve();
+    return texto('modulos/portada/portada.html').then(function (h) {
+      var p = h.split('<!--PIE-->');
+      app.innerHTML = p[0];
+      var pie = document.getElementById('eh-pie');
+      if (pie) pie.innerHTML = p[1] || '';
+    }).catch(function (e) { aviso(app, e.message); throw e; });
+  }
+
+  window.EHMotor = { version: '1.3.0', raiz: RAIZ, cargar: cargar, montar: montar, buscar: buscar };
   try { document.dispatchEvent(new Event('eh:motor')); } catch (e) {}
-  ARRANQUE.reduce(function (p, n) { return p.then(function () { return cargar(n).catch(function () {}); }); }, Promise.resolve());
+  ARRANQUE.reduce(function (p, n) { return p.then(function () { return cargar(n).catch(function () {}); }); },
+    cargar('diseno').catch(function () {}).then(armazon)).catch(function () {});
   buscar();
   new MutationObserver(function () { buscar(); })
     .observe(document.documentElement, { childList: true, subtree: true });
