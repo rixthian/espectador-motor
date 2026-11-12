@@ -306,6 +306,30 @@ body:not(.eh-res) .eh-propios{display:none}
 .eh-propios strong{display:block;font:700 15px/1.3 var(--fh);letter-spacing:-.01em;color:var(--tit)}
 .eh-propios p{margin:4px 0 0;font:400 13px/1.45 var(--fb);color:var(--mut);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .eh-propios p b{color:var(--fg);font-weight:700}
+/* === Artículos, lector y Aura en Moderno === */
+body.eh-item .cab{position:static}
+body.eh-item .eh-cuerpo{--sans:var(--fb);--serif:var(--fb);--accent:var(--acento);--gold:var(--acento);--ink:var(--tit);--ink-2:var(--fg);--muted:var(--mut)}
+body.eh-item .sbz-lec{--sl-acento:var(--acento);--sl-acento-2:var(--acento);--sl-top:10px}
+body.eh-item .post-body .sbz-lec p{font:400 18px/1.75 var(--fb);color:var(--fg)}
+body.eh-item .post-body .sbz-lec .sl-dek{font:500 20px/1.55 var(--fb);font-style:normal;color:var(--mut)}
+body.eh-item .sbz-lec .sl-cap-t{font:800 28px/1.2 var(--fh);letter-spacing:-.02em;color:var(--tit)}
+body.eh-item .sbz-lec .sl-cap::after{height:4px;background:var(--acento)}
+body.eh-item .post-body .sbz-lec .sl-kicker,body.eh-item .sbz-lec .sl-cap-num,body.eh-item .post-body .sbz-lec .sl-pie-t{letter-spacing:.08em}
+body.eh-item .post-body .sbz-lec .sl-capitular::first-letter{font:800 66px/.8 var(--fh);color:var(--acento)}
+body.eh-item .post-body .sbz-lec .sl-b--prim,body.eh-item .post-body .sbz-lec .sl-b--prim:hover{color:var(--acentofg)}
+body.eh-item .sbz-lec .sl-sigla{background:var(--tit);color:var(--bg)}
+body.eh-item .post-body .sbz-lec .sl-fuentes li{font:400 14px/1.6 var(--fb)}
+body.eh-item .post-body .sbz-lec .sl-orn{display:none}
+body.eh-item .sbz-lec figcaption{font-family:var(--fb)}
+body.eh-item .sbz-lec h2,body.eh-item .sbz-lec h3,body.eh-item .sbz-lec h4{font-family:var(--fh);letter-spacing:-.01em}
+body.eh-item .sbz-lec blockquote{font-family:var(--fb)}
+html body #aura,html body #aura .au-op,html body #aura .au-busca input,html body #aura button{font-family:var(--fb)}
+@media (max-width:640px){
+  body.eh-item .post-body .sbz-lec p{font-size:17px;line-height:1.7}
+  body.eh-item .post-body .sbz-lec .sl-dek{font-size:18px}
+  body.eh-item .sbz-lec .sl-cap-t{font-size:23px}
+  body.eh-item .post-body .sbz-lec .sl-capitular::first-letter{font-size:54px}
+}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}html{scroll-behavior:auto}}
 @media (max-width:1020px){
   .racimo{grid-template-columns:1fr 1fr}.lista{grid-column:1/-1}
