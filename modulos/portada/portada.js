@@ -83,8 +83,14 @@
     pon();
   }
 
-  fetch('/feeds/posts/default?alt=json&max-results=30').then(function(r){return r.json();}).then(function(j){
-    var A=(j.feed.entry||[]).map(lee).filter(Boolean);
+  /* Los artículos salen de la base de datos propia; el canal de Blogger queda solo de reserva. */
+  var PU='https://espectador-puente.espectador-historias.workers.dev';
+  function reserva(){return fetch('/feeds/posts/default?alt=json&max-results=30').then(function(r){return r.json();}).then(function(j){return (j.feed.entry||[]).map(lee).filter(Boolean);});}
+  fetch(PU+'/articulos').then(function(r){if(!r.ok)throw new Error('puente');return r.json();}).then(function(j){
+    var A=(j.r||[]).map(function(a){return {t:a.titulo,u:a.ruta,img:a.imagen||'',k:a.rotulo||'Artículo',dek:a.resumen||'',cats:(a.etiquetas||'').split(', ')};});
+    if(!A.length)throw new Error('sin datos');
+    return A;
+  }).catch(reserva).then(function(A){
     ultimos(A);
     if(!item)portada(A);
   }).catch(function(){var r=$('p-racimo');if(r&&!item)r.innerHTML='<p class="vacio">No se pudieron cargar los artículos. Recarga en un momento.</p>';});
