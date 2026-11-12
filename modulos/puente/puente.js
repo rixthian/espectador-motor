@@ -73,7 +73,8 @@
     var caja=$('eh-propios');
     if(!caja){caja=D.createElement('section');caja.id='eh-propios';caja.className='eh-propios';caja.hidden=true;zona.parentNode.insertBefore(caja,zona);}
     caja.hidden=true;
-    fetch(P+'/buscar?q='+encodeURIComponent(q)).then(function(r){return r.json();}).then(function(j){
+    var dir=P+'/buscar?q='+encodeURIComponent(q);
+    fetch(dir).catch(function(){return new Promise(function(ok){setTimeout(ok,700);}).then(function(){return fetch(dir);});}).then(function(r){return r.json();}).then(function(j){
       if(q!==ultQ||!j.r||!j.r.length)return;
       caja.innerHTML='<h2>En El Espectador de historias</h2><div class="l">'+j.r.slice(0,6).map(function(a){
         var tz=esc(a.trozo||a.resumen||'').replace(/\[\[/g,'<b>').replace(/\]\]/g,'</b>');
