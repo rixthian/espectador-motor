@@ -1,0 +1,37 @@
+<div class="mt" id="mt">
+<header class="mt-cab"><small>Mapoteca histórica</small><h2>Mapoteca</h2><p>Un mapa real del mundo para estudiar la historia: superpón mapas antiguos sobre el presente, marca lugares, traza rutas y guarda tus notas.</p></header>
+<div class="mt-app">
+<aside class="mt-panel" aria-label="Herramientas del mapa">
+<h3>Buscar un lugar</h3>
+<form class="mt-busca" id="mt-bf"><input id="mt-bq" type="search" placeholder="Ciudad, río, monumento…" aria-label="Buscar un lugar"><button class="mt-btn" type="submit">Ir</button></form>
+<ul class="mt-res" id="mt-br"></ul>
+<h3>Mapa base</h3>
+<div class="mt-bases" id="mt-bases"></div>
+<h3>Mapa antiguo</h3>
+<select class="mt-sel" id="mt-old" aria-label="Mapa antiguo"></select>
+<div id="mt-oldctl" hidden>
+<label class="mt-fila">Transparencia <input id="mt-op" type="range" min="0" max="100" value="85"></label>
+<label class="mt-chk"><input type="checkbox" id="mt-cort"> Cortina: comparar con el presente</label>
+<p class="mt-nota" id="mt-oldinfo"></p>
+</div>
+<h3>Capas de estudio</h3>
+<label class="mt-chk"><input type="checkbox" id="mt-c-arts" checked> Lugares de nuestros artículos</label>
+<label class="mt-chk"><input type="checkbox" id="mt-c-bat"> Batallas en esta zona</label>
+<label class="mt-chk"><input type="checkbox" id="mt-c-wiki"> Wikipedia en esta zona</label>
+<p class="mt-nota" id="mt-capinfo">Las batallas y los artículos de Wikipedia se cargan para la zona que estás viendo.</p>
+<h3>Mi estudio</h3>
+<p class="mt-nota">Usa la barra del mapa para poner marcadores, trazar rutas, dibujar territorios o escribir textos. Toca cualquier dibujo para ponerle título, nota y color.</p>
+<div class="mt-acc">
+<button class="mt-btn" type="button" id="mt-exp">Descargar</button>
+<button class="mt-btn" type="button" id="mt-imp">Abrir archivo</button>
+<button class="mt-btn" type="button" id="mt-borr">Borrar todo</button>
+<button class="mt-btn" type="button" id="mt-full">Pantalla completa</button>
+</div>
+<input type="file" id="mt-file" accept=".geojson,.json,application/json" hidden>
+<p class="mt-nota" id="mt-est">Tu estudio se guarda solo en este navegador.</p>
+</aside>
+<div class="mt-mapa-w" id="mt-w"><div class="mt-mapa" id="mt-mapa"></div><div class="mt-swipe" id="mt-sw"><span aria-hidden="true">⇔</span></div><div class="mt-coord" id="mt-xy"></div><div class="mt-cargando" id="mt-load">Cargando…</div></div>
+</div>
+<section class="mt-arts" id="mt-arts" hidden><h3>Artículos de la Mapoteca</h3><div class="mt-arts-g" id="mt-arts-g"></div></section>
+<p class="mt-creditos">Mapas: © colaboradores de <a href="https://www.openstreetmap.org/copyright" rel="noopener" target="_blank">OpenStreetMap</a>, OpenTopoMap, Esri. Mapas antiguos georreferenciados en <a href="https://mapwarper.net" rel="noopener" target="_blank">Map Warper</a>, de la Biblioteca Nacional de Colombia, la Universidad de Texas, la Universidad Estatal de Míchigan y la Colección Benson. Datos de Wikidata y Wikipedia. Búsqueda de lugares: Nominatim.</p>
+</div>
