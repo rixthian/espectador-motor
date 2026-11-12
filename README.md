@@ -11,6 +11,10 @@ Blogger es la casa; este almacén es la sala de máquinas.
 nucleo/
   motor.js            El cargador: trae los módulos y verifica sus huellas
 modulos/
+  diseno/             Diseño general: colores, letras, modo claro y oscuro
+    diseno.css
+  buscador/           Buscador, filtros, ficha, efemérides, tarjetas y páginas
+    buscador.js
   mapoteca/           Mapa de estudio con mapas antiguos
     mapoteca.html
     mapoteca.css
@@ -35,6 +39,7 @@ herramientas/
    ```
 
    y el diseño puede pedirlo por código: `EHMotor.cargar('lector')`.
+   Al arrancar, el motor carga siempre `diseno` y `buscador`.
 3. El motor descarga las hojas del módulo desde ese mismo commit y comprueba la
    huella SHA-384 de cada una antes de usarla. Si una hoja no coincide, no se
    ejecuta.
