@@ -63,7 +63,7 @@
 
   /* Errores de la web */
   var nerr=0;
-  W.addEventListener('error',function(e){if(nerr++>4)return;var f=(e.filename||'').split('/').pop();reg('error',(e.message||'error')+(f?' · '+f+':'+(e.lineno||0)):''));});
+  W.addEventListener('error',function(e){if(nerr++>4)return;var f=(e.filename||'').split('/').pop();reg('error',(e.message||'error')+(f?' · '+f+':'+(e.lineno||0):''));});
   W.addEventListener('unhandledrejection',function(e){if(nerr++>4)return;var r=e.reason;reg('error','promesa: '+String(r&&r.message||r).slice(0,200));});
 
   /* Buscador propio: artículos de la casa, encima de los resultados */
