@@ -76,6 +76,16 @@ main{padding:26px clamp(16px,3vw,36px) 60px;min-width:0}
 .obra{border-style:dashed}
 .obra p{margin:6px 0 0;color:var(--mut)}
 .acciones{display:flex;gap:8px;flex-wrap:wrap}
+.plug{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:14px;align-items:center;padding:14px 0;border-bottom:1px solid var(--linea)}
+.plug:last-child{border-bottom:0}
+.plug b{display:block;color:var(--tit);font:700 15px var(--fh)}
+.plug span{color:var(--mut);font-size:13.5px;overflow-wrap:anywhere}
+.int{width:46px;height:26px;border-radius:999px;border:0;background:var(--linea);position:relative;transition:background .2s;flex:none}
+.int::after{content:"";position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:#fff;transition:transform .2s;box-shadow:0 1px 3px rgba(0,0,0,.3)}
+.int[aria-checked=true]{background:var(--acento)}
+.int[aria-checked=true]::after{transform:translateX(20px)}
+textarea{width:100%;min-height:74px;font:400 13px ui-monospace,Menlo,Consolas,monospace;color:var(--tit);background:var(--bg);border:1px solid var(--linea);border-radius:10px;padding:10px;outline:0;resize:vertical}
+textarea:focus{border-color:var(--acento)}
 @media (max-width:760px){
   .app{grid-template-columns:1fr}
   .lado{position:static;height:auto;flex-direction:row;overflow-x:auto;padding:8px;gap:2px}
@@ -172,17 +182,54 @@ main{padding:26px clamp(16px,3vw,36px) 60px;min-width:0}
         '<div class="caja"><h2>Errores recientes</h2>'+(j.errores.length?'<div class="rueda"><table class="tabla"><tbody>'+j.errores.map(function(e){return '<tr><td>'+esc(fecha(e.ts))+'</td><td>'+esc(e.ruta||'')+'</td><td>'+esc(e.dato||'')+'</td></tr>';}).join('')+'</tbody></table></div>':'<p class="vacio">Ninguno. Bien.</p>')+'</div>';
       }).then(function(h){setTimeout(function(){var s=$('s-dias');if(s){s.value=String(d);s.addEventListener('change',function(){sessionStorage.setItem('eh-dias',s.value);ruta();});}},0);return h;});
     }
+,
+    plugins:function(){
+      return api('ajustes').then(function(j){
+        var P={},X=[];
+        j.r.forEach(function(a){try{if(a.clave==='pub.plugins')P=JSON.parse(a.valor)||{};if(a.clave==='pub.extras')X=JSON.parse(a.valor)||[];}catch(e){}});
+        EST={P:P,X:X};
+        return cabeza('Plugins','Enciende, apaga o instala piezas de la web')+
+        '<div class="caja"><h2>Instalados</h2>'+LISTA.map(function(p){return '<div class="plug"><div><b>'+esc(p.n)+'</b><span>'+esc(p.d)+'</span></div><button type="button" class="int" role="switch" data-k="'+p.k+'" aria-checked="'+(P[p.k]===false?'false':'true')+'" aria-label="'+esc(p.n)+'"></button></div>';}).join('')+'</div>'+
+        '<div class="caja"><h2>Añadidos</h2>'+(X.length?X.map(function(x,i){return '<div class="plug"><div><b>'+esc(x.n)+'</b><span>'+esc(x.r)+'</span></div><button type="button" class="btn sec" data-quita="'+i+'">Quitar</button></div>';}).join(''):'<p class="vacio">Todavía no has añadido ninguno.</p>')+'</div>'+
+        '<div class="caja"><h2>Instalar un plugin</h2><p class="vacio" style="margin-bottom:10px">Pega aquí el código de instalación del plugin.</p><textarea id="t-inst" spellcheck="false" aria-label="Código de instalación"></textarea><div class="acciones" style="margin-top:10px;align-items:center"><button class="btn" type="button" id="b-inst">Instalar</button><span class="vacio" id="m-inst" role="status"></span></div></div>'+
+        '<p class="vacio">Los cambios llegan a cada lector en su siguiente visita.</p>';
+      });
+    }
   };
-  var OBRA={apariencia:['Apariencia','Color de acento, menú, temas del buscador, cuestionario y «¿Sabías que?», sin tocar código.'],plugins:['Plugins','Cada módulo de la web (efectos, Aura, lector, Mapoteca, buscador propio) con su interruptor.'],publicidad:['Publicidad','Tus propios espacios de anuncio: qué banner, dónde y hasta cuándo. Sin rastreo.'],ajustes:['Ajustes','Nombre del sitio, textos del pie y opciones generales.']};
+  var EST={P:{},X:[]},TRAS={};
+  var LISTA=[
+    {k:'efectos',n:'Efectos',d:'Apariciones al bajar, ondas al pulsar y barra de avance.'},
+    {k:'lector',n:'Lector',d:'La barra de Escuchar, lectura rápida e idioma de los artículos.'},
+    {k:'aura',n:'Aura',d:'La guía que acompaña la lectura.'},
+    {k:'mapoteca',n:'Mapoteca',d:'El mapa de estudio.'},
+    {k:'puente',n:'Registro y buscador propio',d:'Las estadísticas de este panel y tus artículos dentro de la búsqueda. Si lo apagas, el panel deja de recibir datos.'}
+  ];
+  function guarda(c,v){return api('ajustes',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({clave:c,valor:v})});}
+  TRAS.plugins=function(){
+    $('vista').onclick=function(e){
+      var s=e.target.closest('.int');
+      if(s){var on=s.getAttribute('aria-checked')!=='true';s.setAttribute('aria-checked',on?'true':'false');EST.P[s.getAttribute('data-k')]=on;guarda('pub.plugins',EST.P).catch(function(){s.setAttribute('aria-checked',on?'false':'true');});return;}
+      var q=e.target.closest('[data-quita]');
+      if(q){EST.X.splice(+q.getAttribute('data-quita'),1);guarda('pub.extras',EST.X).then(ruta);return;}
+      if(e.target.closest('#b-inst')){
+        var x=null;try{x=JSON.parse($('t-inst').value.trim());}catch(err){}
+        if(!x||!x.n||!/^[0-9a-f]{40}$/.test(x.c)||!/^modulos\/[a-z0-9_\/-]+\.js$/.test(x.r)||!/^sha384-[A-Za-z0-9+\/=]{64}$/.test(x.h)){$('m-inst').textContent='Ese código no es válido.';return;}
+        EST.X=EST.X.filter(function(y){return y.r!==x.r;});
+        EST.X.push({n:String(x.n).slice(0,60),c:x.c,r:x.r,h:x.h});
+        guarda('pub.extras',EST.X).then(ruta);
+      }
+    };
+  };
+  var OBRA={apariencia:['Apariencia','Color de acento, menú, temas del buscador, cuestionario y «¿Sabías que?», sin tocar código.'],publicidad:['Publicidad','Tus propios espacios de anuncio: qué banner, dónde y hasta cuándo. Sin rastreo.'],ajustes:['Ajustes','Nombre del sitio, textos del pie y opciones generales.']};
 
   function ruta(){
     if(!clave)return;
     var v=(location.hash||'#escritorio').slice(1);if(!V[v]&&!OBRA[v])v='escritorio';
     [].forEach.call(D.querySelectorAll('.lado a[data-v]'),function(a){a.classList.toggle('on',a.getAttribute('data-v')===v);});
-    var m=$('vista');
+    var m=$('vista');m.onclick=null;
     if(OBRA[v]){m.innerHTML=cabeza(OBRA[v][0],'')+'<div class="caja obra"><h2>En construcción</h2><p>'+esc(OBRA[v][1])+'</p></div>';return;}
     m.innerHTML='<p class="vacio">Cargando…</p>';
-    V[v]().then(function(h){m.innerHTML=h;var b=$('b-sinc');if(b)b.addEventListener('click',function(){b.disabled=true;b.textContent='Copiando…';api('sincroniza',{method:'POST'}).then(function(j){b.textContent='Copiados: '+j.n;setTimeout(ruta,900);}).catch(function(){b.textContent='No se pudo';b.disabled=false;});});}).catch(fallo);
+    V[v]().then(function(h){m.innerHTML=h;if(TRAS[v])TRAS[v]();var b=$('b-sinc');if(b)b.addEventListener('click',function(){b.disabled=true;b.textContent='Copiando…';api('sincroniza',{method:'POST'}).then(function(j){b.textContent='Copiados: '+j.n;setTimeout(ruta,900);}).catch(function(){b.textContent='No se pudo';b.disabled=false;});});}).catch(fallo);
   }
   window.addEventListener('hashchange',ruta);
   if(clave)api('resumen').then(entra).catch(function(e){sale(e&&e.c===401?'':'');});
