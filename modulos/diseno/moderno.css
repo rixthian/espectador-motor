@@ -350,6 +350,31 @@ body.eh-item .sbz-lec .mh-ruta li.on{background:color-mix(in srgb,var(--acento) 
 body.eh-item .sbz-lec .mh-ruta li.on span,body.eh-item .sbz-lec .mh-ruta-pie a{color:var(--acento)}
 body.eh-item .sbz-lec figcaption{color:var(--mut)!important}
 body.eh-item .sbz-lec .cf-foto img{border:1px solid var(--linea)!important;padding:0!important;background:none!important;border-radius:var(--radio)!important;box-shadow:none!important}
+/* === Efectos === */
+@view-transition{navigation:auto}
+::view-transition-old(root),::view-transition-new(root){animation-duration:.26s}
+#ef-avance{position:fixed;left:0;top:0;right:0;height:3px;z-index:99;background:var(--acento);transform:scaleX(0);transform-origin:0 50%;pointer-events:none}
+.cab{transition:box-shadow .3s}
+.cab.ef-baja{box-shadow:0 10px 30px var(--sombra)}
+html.ef .ef-ap{opacity:0}
+html.ef .ef-ap.ef-in{opacity:1;animation:ef-sube .6s cubic-bezier(.2,.7,.2,1) backwards;animation-delay:calc(var(--ef-i,0)*60ms)}
+@keyframes ef-sube{from{opacity:0;transform:translateY(18px)}}
+.ef-con-onda{overflow:hidden}
+.ef-onda{position:absolute;border-radius:50%;background:currentColor;opacity:.2;transform:scale(0);animation:ef-onda .6s ease-out forwards;pointer-events:none}
+@keyframes ef-onda{to{transform:scale(1);opacity:0}}
+.busca button,.filtros button,.tend button,.quiz .sig,.temas3 button{transition:transform .15s,background .2s,color .2s,border-color .2s}
+.busca button:active,.filtros button:active,.tend button:active,.quiz .sig:active,.temas3 button:active{transform:scale(.95)}
+.cats a{transition:opacity .2s,border-color .25s}
+.logo::before{transition:transform .4s cubic-bezier(.2,.7,.2,1)}
+.logo:hover::before{transform:rotate(-8deg) scale(1.06)}
+.panel:not([hidden]),.sug.abierta{animation:ef-cae .22s ease-out}
+@keyframes ef-cae{from{opacity:0;transform:translateY(-8px)}}
+.mini h3,.lista b,.grande h3{transition:color .2s}
+.grande:hover h3{color:var(--acento)}
+.dato{transition:border-color .2s,transform .25s}
+.dato:hover{border-color:var(--acento);transform:translateX(3px)}
+.ut{transition:transform .25s,box-shadow .25s}
+.ut:hover{transform:translateY(-3px);box-shadow:0 14px 30px var(--sombra)}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}html{scroll-behavior:auto}}
 @media (max-width:1020px){
   .racimo{grid-template-columns:1fr 1fr}.lista{grid-column:1/-1}
