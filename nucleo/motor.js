@@ -1,4 +1,4 @@
-/*! El Espectador de historias · motor modular v1.6
+/*! El Espectador de historias · motor modular v1.7
  * Carga módulos desde este mismo almacén, en una versión fija,
  * y comprueba la huella SHA-384 de cada hoja antes de usarla.
  *
@@ -48,6 +48,30 @@
 
   var cargados = {};
 
+  /* Ajustes del panel de control: qué plugins están encendidos y cuáles se añadieron.
+   * Se usa la última copia guardada (para no frenar el arranque) y se renueva al final. */
+  var PUENTE = 'https://espectador-puente.espectador-historias.workers.dev';
+  var CONF = {};
+  try { CONF = JSON.parse(localStorage.getItem('eh-config') || '{}') || {}; } catch (e) { CONF = {}; }
+  function activo(n) { return !(CONF.plugins && CONF.plugins[n] === false); }
+
+  function extras() {
+    (Array.isArray(CONF.extras) ? CONF.extras : []).forEach(function (x) {
+      if (!x || !/^[0-9a-f]{40}$/.test(x.c) || !/^modulos\/[a-z0-9_\/-]+\.js$/.test(x.r) || !/^sha384-[A-Za-z0-9+\/=]{64}$/.test(x.h)) return;
+      var s = document.createElement('script');
+      s.src = 'https://cdn.jsdelivr.net/gh/rixthian/espectador-motor@' + x.c + '/' + x.r;
+      s.crossOrigin = 'anonymous'; s.integrity = x.h; s.setAttribute('data-eh-extra', x.r);
+      document.body.appendChild(s);
+    });
+  }
+
+  function renueva() {
+    try {
+      fetch(PUENTE + '/config', { credentials: 'omit' }).then(function (r) { return r.ok ? r.json() : null; })
+        .then(function (j) { if (j) localStorage.setItem('eh-config', JSON.stringify(j)); }).catch(function () {});
+    } catch (e) {}
+  }
+
   function ruta(nombre, hoja) { return 'modulos/' + nombre + '/' + hoja; }
 
   function b64(buf) {
@@ -96,6 +120,7 @@
     if (cargados[nombre]) return cargados[nombre];
     var m = MODULOS[nombre];
     if (!m) return Promise.reject(new Error('Módulo desconocido: ' + nombre));
+    if (!activo(nombre)) return Promise.resolve();
     cargados[nombre] = (m.css ? estilo(ruta(nombre, m.css)) : Promise.resolve())
       .then(function () { return m.js ? guion(ruta(nombre, m.js)) : null; })
       .catch(function (e) { delete cargados[nombre]; if (window.console) console.warn('[EH motor]', e.message); throw e; });
@@ -113,6 +138,7 @@
     if (el.__eh) return; el.__eh = 1;
     var nombre = el.getAttribute('data-eh-modulo'), m = MODULOS[nombre];
     if (!m) return aviso(el, 'Módulo desconocido: ' + nombre);
+    if (!activo(nombre)) { el.innerHTML = '<p style="text-align:center;font:600 13px system-ui,sans-serif;color:#5c6370;padding:40px 16px">Esta sección está desactivada por ahora.</p>'; return; }
     el.innerHTML = '<p style="text-align:center;font:600 13px system-ui,sans-serif;letter-spacing:.04em;color:#8a8a8a;padding:60px 16px">Cargando…</p>';
     Promise.all([m.html ? texto(ruta(nombre, m.html)) : '', m.css ? estilo(ruta(nombre, m.css)) : null])
       .then(function (r) {
@@ -138,10 +164,11 @@
     }).catch(function (e) { aviso(app, e.message); throw e; });
   }
 
-  window.EHMotor = { version: '1.6.0', raiz: RAIZ, cargar: cargar, montar: montar, buscar: buscar };
+  window.EHMotor = { version: '1.7.0', raiz: RAIZ, config: CONF, cargar: cargar, montar: montar, buscar: buscar };
   try { document.dispatchEvent(new Event('eh:motor')); } catch (e) {}
   ARRANQUE.reduce(function (p, n) { return p.then(function () { return cargar(n).catch(function () {}); }); },
-    cargar('diseno').catch(function () {}).then(armazon)).catch(function () {});
+    cargar('diseno').catch(function () {}).then(armazon)).catch(function () {}).then(extras);
+  renueva();
   buscar();
   new MutationObserver(function () { buscar(); })
     .observe(document.documentElement, { childList: true, subtree: true });
