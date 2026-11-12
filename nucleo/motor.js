@@ -1,4 +1,4 @@
-/*! El Espectador de historias · motor modular v1.4
+/*! El Espectador de historias · motor modular v1.5
  * Carga módulos desde este mismo almacén, en una versión fija,
  * y comprueba la huella SHA-384 de cada hoja antes de usarla.
  *
@@ -19,15 +19,15 @@
   var HUELLAS = {
     "modulos/aura/aura.js": "sha384-KHD0qGCFBH/BIoHNI3891ocPNG2G4XuD8byvzRAKls4OCRr5hrMsmtryZXf7B0ql",
     "modulos/buscador/buscador.js": "sha384-yYBAX+TBPZShDJ+y2eJaj8jH6etK015t6RooG7+XlJBuw+OOEUri8KSCT5DBzR9N",
-    "modulos/diseno/moderno.css": "sha384-/9C+ksUr+VOvKDVYZN8gWmPpFY42fCEuQO/+LVxDTtHtrqi5coAd2di3YE0ku+EI",
+    "modulos/diseno/moderno.css": "sha384-KC5dBFBNwmV6OLrO2csOjTir8hO0uhw5Ncmr9uyykqBAHsCaexec/79RcNGNHGon",
     "modulos/lector/lector.css": "sha384-Eql9MuC/vaCBUOzaugmSOFlAdBmlS1FKp8ga+HnuMbEPwwUvMXFIotYNaFHzqCzA",
     "modulos/lector/lector.js": "sha384-p0INvJlQm617z5ysgyscsElTUNlVagyBxqvRlY6kyu5LTay4uLBHoHJAA9aNzcO3",
-    "modulos/mapoteca/mapoteca.css": "sha384-5d9nyiBcNL9Zl/2w/3hSPA3EPd2znfyv17l91C3ygGSLWj8y4BdPIkEQ9fO1NHAq",
+    "modulos/mapoteca/mapoteca.css": "sha384-v7SBdRbGvHYx6si0G/NLvhT+pyHyab2nxTFwiYrDIDphyiVScOpnEydPy1hlfAFF",
     "modulos/mapoteca/mapoteca.html": "sha384-w8Kw9g3RYPv8v+wQGvT3Qw+Qj42ed9eFZka4xWdTEF0yU56NUER/uH0VRFsvxOJE",
     "modulos/mapoteca/mapoteca.js": "sha384-3/xv+8DTsXRiunYU5oqpgS0Belenz7aHZETHflLpm7tQYcyVdIVUKyvkviH/MAF1",
     "modulos/portada/portada.html": "sha384-xli3ZKB97cfZbbMMqbSX1KbmPyry/u/z5E5q7ourYaVCJHwGtouBlDOztbF6AXV+",
     "modulos/portada/portada.js": "sha384-SCl/xfV+/HzdTy4tbtRSR/zVIdo4HYIg1/M3UdMbSbuqS+IjQQgpWgnak+NhbW7N",
-    "modulos/puente/puente.js": "sha384-JwJtb6qCZpM8vvKEwadtRHHntpViH0z7OM9+Aqy8Wxl1Jy6e+VchHSp7++qBIwHI"
+    "modulos/puente/puente.js": "sha384-qDhVg6ekXHbrryD0IsWPcv2fC+rFM+5zDRWlJYQSwuT44xZ2sPSK6yfiGIRQn/XH"
   };
 
   /* Cada módulo vive en su carpeta: modulos/<nombre>/ */
@@ -136,7 +136,7 @@
     }).catch(function (e) { aviso(app, e.message); throw e; });
   }
 
-  window.EHMotor = { version: '1.4.0', raiz: RAIZ, cargar: cargar, montar: montar, buscar: buscar };
+  window.EHMotor = { version: '1.5.0', raiz: RAIZ, cargar: cargar, montar: montar, buscar: buscar };
   try { document.dispatchEvent(new Event('eh:motor')); } catch (e) {}
   ARRANQUE.reduce(function (p, n) { return p.then(function () { return cargar(n).catch(function () {}); }); },
     cargar('diseno').catch(function () {}).then(armazon)).catch(function () {});
