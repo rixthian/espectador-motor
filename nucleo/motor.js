@@ -1,4 +1,4 @@
-/*! El Espectador de historias · motor modular v1.5
+/*! El Espectador de historias · motor modular v1.6
  * Carga módulos desde este mismo almacén, en una versión fija,
  * y comprueba la huella SHA-384 de cada hoja antes de usarla.
  *
@@ -18,15 +18,16 @@
   /* Huellas de cada hoja (las escribe herramientas/huellas.py). */
   var HUELLAS = {
     "modulos/aura/aura.js": "sha384-KHD0qGCFBH/BIoHNI3891ocPNG2G4XuD8byvzRAKls4OCRr5hrMsmtryZXf7B0ql",
-    "modulos/buscador/buscador.js": "sha384-yYBAX+TBPZShDJ+y2eJaj8jH6etK015t6RooG7+XlJBuw+OOEUri8KSCT5DBzR9N",
-    "modulos/diseno/moderno.css": "sha384-RVXuA3/RjFt4cPOumAGPIkHO8E7xe76fsDbkhaxCeC3eNbECOergTcNsd8fSfK8H",
+    "modulos/buscador/buscador.js": "sha384-Fm/o3JSy1ADe5AXBwHiH+j/s07YVOE9JluD6/YOj8KraMOISLIPBmVmmk+MbRako",
+    "modulos/diseno/moderno.css": "sha384-qswRT4AJB7TzwPraFL0KVqhw8N0f/3y00+dUuB9dseJ7FJjWg3XfZhnBRXbnK7QK",
+    "modulos/efectos/efectos.js": "sha384-NYNjt93wkGkrrob18o+CZUVYeF2N6zZqvW/m/98Lcf6n+kuE9KEpjhsPoC5Aa3uL",
     "modulos/lector/lector.css": "sha384-Eql9MuC/vaCBUOzaugmSOFlAdBmlS1FKp8ga+HnuMbEPwwUvMXFIotYNaFHzqCzA",
     "modulos/lector/lector.js": "sha384-p0INvJlQm617z5ysgyscsElTUNlVagyBxqvRlY6kyu5LTay4uLBHoHJAA9aNzcO3",
     "modulos/mapoteca/mapoteca.css": "sha384-v7SBdRbGvHYx6si0G/NLvhT+pyHyab2nxTFwiYrDIDphyiVScOpnEydPy1hlfAFF",
     "modulos/mapoteca/mapoteca.html": "sha384-w8Kw9g3RYPv8v+wQGvT3Qw+Qj42ed9eFZka4xWdTEF0yU56NUER/uH0VRFsvxOJE",
     "modulos/mapoteca/mapoteca.js": "sha384-3/xv+8DTsXRiunYU5oqpgS0Belenz7aHZETHflLpm7tQYcyVdIVUKyvkviH/MAF1",
     "modulos/portada/portada.html": "sha384-xli3ZKB97cfZbbMMqbSX1KbmPyry/u/z5E5q7ourYaVCJHwGtouBlDOztbF6AXV+",
-    "modulos/portada/portada.js": "sha384-SCl/xfV+/HzdTy4tbtRSR/zVIdo4HYIg1/M3UdMbSbuqS+IjQQgpWgnak+NhbW7N",
+    "modulos/portada/portada.js": "sha384-oteMexAZGQpgWjvsh+sHU3fRRRXYy2R6Gt3Th7QRRwD0EJe5io7m9NExCaPif4ev",
     "modulos/puente/puente.js": "sha384-qDhVg6ekXHbrryD0IsWPcv2fC+rFM+5zDRWlJYQSwuT44xZ2sPSK6yfiGIRQn/XH"
   };
 
@@ -38,11 +39,12 @@
     buscador: { js: 'buscador.js' },
     diseno:   { css: 'moderno.css' },
     portada:  { js: 'portada.js' },
-    puente:   { js: 'puente.js' }
+    puente:   { js: 'puente.js' },
+    efectos:  { js: 'efectos.js' }
   };
 
   /* Módulos que arrancan siempre, en este orden, después del armazón. */
-  var ARRANQUE = ['buscador', 'portada', 'puente'];
+  var ARRANQUE = ['buscador', 'portada', 'efectos', 'puente'];
 
   var cargados = {};
 
@@ -136,7 +138,7 @@
     }).catch(function (e) { aviso(app, e.message); throw e; });
   }
 
-  window.EHMotor = { version: '1.5.2', raiz: RAIZ, cargar: cargar, montar: montar, buscar: buscar };
+  window.EHMotor = { version: '1.6.0', raiz: RAIZ, cargar: cargar, montar: montar, buscar: buscar };
   try { document.dispatchEvent(new Event('eh:motor')); } catch (e) {}
   ARRANQUE.reduce(function (p, n) { return p.then(function () { return cargar(n).catch(function () {}); }); },
     cargar('diseno').catch(function () {}).then(armazon)).catch(function () {});
