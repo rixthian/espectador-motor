@@ -76,6 +76,9 @@ main{padding:26px clamp(16px,3vw,36px) 60px;min-width:0}
 .obra{border-style:dashed}
 .obra p{margin:6px 0 0;color:var(--mut)}
 .acciones{display:flex;gap:8px;flex-wrap:wrap}
+.form{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
+.form label{font:600 13px var(--fb);color:var(--mut);display:flex;flex-direction:column;gap:6px;min-width:0}
+.form input,.form select{width:100%}
 .plug{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:14px;align-items:center;padding:14px 0;border-bottom:1px solid var(--linea)}
 .plug:last-child{border-bottom:0}
 .plug b{display:block;color:var(--tit);font:700 15px var(--fh)}
@@ -194,9 +197,28 @@ textarea:focus{border-color:var(--acento)}
         '<div class="caja"><h2>Instalar un plugin</h2><p class="vacio" style="margin-bottom:10px">Pega aquí el código de instalación del plugin.</p><textarea id="t-inst" spellcheck="false" aria-label="Código de instalación"></textarea><div class="acciones" style="margin-top:10px;align-items:center"><button class="btn" type="button" id="b-inst">Instalar</button><span class="vacio" id="m-inst" role="status"></span></div></div>'+
         '<p class="vacio">Los cambios llegan a cada lector en su siguiente visita.</p>';
       });
+    },
+    publicidad:function(){
+      return Promise.all([api('ajustes'),api('estadisticas?dias=30')]).then(function(r){
+        var A=[],S={};
+        r[0].r.forEach(function(a){try{if(a.clave==='pub.anuncios')A=JSON.parse(a.valor)||[];}catch(e){}});
+        (r[1].anuncios||[]).forEach(function(x){S[x.k]=x;});
+        EST.A=A;
+        return cabeza('Publicidad','Tus propios anuncios, sin redes ni rastreo')+
+        '<div class="caja"><h2>Anuncios</h2>'+(A.length?A.map(function(a,i){var s=S[a.id]||{};return '<div class="plug"><div style="display:grid;grid-template-columns:96px minmax(0,1fr);gap:12px;align-items:center"><img alt="" src="'+esc(a.img)+'" style="width:96px;aspect-ratio:16/9;object-fit:cover;border-radius:8px;border:1px solid var(--linea)"><div><b>'+esc(a.n)+'</b><span>'+esc(LUG[a.lugar]||a.lugar)+' · '+(a.desde||a.hasta?esc((a.desde||'…')+' → '+(a.hasta||'…')):'sin fecha de fin')+' · '+num(s.vistas)+' vistas · '+num(s.clics)+' clics en 30 días</span></div></div><div class="acciones" style="align-items:center"><button type="button" class="int" role="switch" data-an="'+i+'" aria-checked="'+(a.on===false?'false':'true')+'" aria-label="Activo"></button><button type="button" class="btn sec" data-borra="'+i+'">Quitar</button></div></div>';}).join(''):'<p class="vacio">Todavía no hay anuncios.</p>')+'</div>'+
+        '<div class="caja"><h2>Nuevo anuncio</h2><div class="form">'+
+        '<label>Nombre<input id="a-n" maxlength="60" placeholder="p. ej. Librería del barrio"></label>'+
+        '<label>Imagen del banner (PNG, JPG, WebP o GIF, hasta 900 KB)<input id="a-f" type="file" accept="image/png,image/jpeg,image/webp,image/gif"></label>'+
+        '<label>Enlace al que lleva<input id="a-u" type="url" placeholder="https://…"></label>'+
+        '<label>Dónde sale<select id="a-l"><option value="portada">Portada, bajo «Lo más reciente»</option><option value="articulo">Al final de los artículos</option><option value="pie">Sobre el pie, en portada y artículos</option></select></label>'+
+        '<label>Desde (opcional)<input id="a-d" type="date"></label><label>Hasta (opcional)<input id="a-h" type="date"></label>'+
+        '<label>Descripción de la imagen<input id="a-a" maxlength="120" placeholder="Qué se ve en el banner"></label>'+
+        '</div><div class="acciones" style="margin-top:14px;align-items:center"><button class="btn" type="button" id="b-an">Guardar anuncio</button><span class="vacio" id="m-an" role="status"></span></div></div>'+
+        '<p class="vacio">Los anuncios llevan siempre la etiqueta «Publicidad» y no salen en la Mapoteca ni en la Casa Urdaneta. Los cambios llegan a cada lector en su siguiente visita.</p>';
+      });
     }
   };
-  var EST={P:{},X:[]},TRAS={};
+  var EST={P:{},X:[],A:[]},TRAS={},LUG={portada:'Portada',articulo:'Final de los artículos',pie:'Sobre el pie'};
   var LISTA=[
     {k:'efectos',n:'Efectos',d:'Apariciones al bajar, ondas al pulsar y barra de avance.'},
     {k:'lector',n:'Lector',d:'La barra de Escuchar, lectura rápida e idioma de los artículos.'},
@@ -220,7 +242,25 @@ textarea:focus{border-color:var(--acento)}
       }
     };
   };
-  var OBRA={apariencia:['Apariencia','Color de acento, menú, temas del buscador, cuestionario y «¿Sabías que?», sin tocar código.'],publicidad:['Publicidad','Tus propios espacios de anuncio: qué banner, dónde y hasta cuándo. Sin rastreo.'],ajustes:['Ajustes','Nombre del sitio, textos del pie y opciones generales.']};
+  TRAS.publicidad=function(){
+    $('vista').onclick=function(e){
+      var s=e.target.closest('.int[data-an]');
+      if(s){var i=+s.getAttribute('data-an'),on=s.getAttribute('aria-checked')!=='true';s.setAttribute('aria-checked',on?'true':'false');EST.A[i].on=on;guarda('pub.anuncios',EST.A).catch(function(){s.setAttribute('aria-checked',on?'false':'true');});return;}
+      var q=e.target.closest('[data-borra]');
+      if(q){EST.A.splice(+q.getAttribute('data-borra'),1);guarda('pub.anuncios',EST.A).then(ruta);return;}
+      if(e.target.closest('#b-an')){
+        var m=$('m-an'),nm=$('a-n').value.trim(),u=$('a-u').value.trim(),f=$('a-f').files[0];
+        if(!nm||!f||!/^https:\/\/\S+$/.test(u)){m.textContent='Faltan el nombre, la imagen o un enlace que empiece por https://';return;}
+        if(f.size>900000){m.textContent='La imagen pesa más de 900 KB.';return;}
+        m.textContent='Subiendo…';
+        api('imagen',{method:'POST',headers:{'Content-Type':f.type},body:f}).then(function(j){
+          EST.A.push({id:'a'+Date.now().toString(36),n:nm.slice(0,60),img:j.url,url:u,lugar:$('a-l').value,desde:$('a-d').value||'',hasta:$('a-h').value||'',alt:$('a-a').value.trim().slice(0,120),on:true});
+          return guarda('pub.anuncios',EST.A);
+        }).then(ruta).catch(function(){m.textContent='No se pudo guardar. Revisa el tipo y el peso de la imagen.';});
+      }
+    };
+  };
+  var OBRA={apariencia:['Apariencia','Color de acento, menú, temas del buscador, cuestionario y «¿Sabías que?», sin tocar código.'],ajustes:['Ajustes','Nombre del sitio, textos del pie y opciones generales.']};
 
   function ruta(){
     if(!clave)return;
