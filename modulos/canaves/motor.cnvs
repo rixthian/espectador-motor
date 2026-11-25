@@ -1,0 +1,58 @@
+# The engine plan for El Espectador de historias.
+# Fonts are the ones the WordPress site used. All three are open (OFL).
+
+font headline    = "Libre Caslon Text" weight 700 file "libre-caslon-text-latin-700-normal.woff2" license "OFL"
+font text        = "Source Serif 4" weight 400 file "source-serif-4-latin-400-normal.woff2" license "OFL"
+font text_italic = "Source Serif 4" weight 400 style italic file "source-serif-4-latin-400-italic.woff2" license "OFL"
+font text_bold   = "Source Serif 4" weight 600 file "source-serif-4-latin-600-normal.woff2" license "OFL"
+font ui          = "Public Sans" weight 400 file "public-sans-latin-400-normal.woff2" license "OFL"
+font ui_bold     = "Public Sans" weight 600 file "public-sans-latin-600-normal.woff2" license "OFL"
+
+install calligraphy
+
+# The page opens up on big screens: text keeps a readable measure,
+# pictures go wide, and everything grows on desktops, TVs and consoles.
+layout
+  content 736
+  wide 1100
+  gutter 16 to 48
+  grow from 1280 to 3840 by 2.4
+
+theme main
+  color background = "#fbfaf7"
+  color accent = "#7a1f2b"
+  color ink = "#161a20"
+  use headline for headings
+  use text for body
+  use ui for menu
+  role lead = ".sl-dek"
+  role quote = "blockquote.ef-ap, section.cita"
+  use calligraphy_italic for lead
+  use calligraphy_italic for quote
+  role article = ".post-body > .sbz-lec"
+  role title = ".eh-art-cab"
+  role figure = ".sbz-lec figure.sl-fig"
+  role home = "#eh-home"
+  scale article
+  scale title
+  scale home
+  wide figure
+  wide title
+
+screens
+  phone 17
+  tablet 18
+  desktop 19
+  tv 26
+  touch 44
+
+menu
+  link "Home" to "/"
+  link "Series" to "/series"
+  link "About" to "/about"
+
+behavior
+  reader on
+  protection on
+  exam on
+  search on

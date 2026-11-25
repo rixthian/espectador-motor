@@ -1,0 +1,40 @@
+@layer canaves{
+:root{--cnvs-content:736px;--cnvs-wide:1100px;--cnvs-gutter:clamp(16px,4vw,48px);--cnvs-z:1}
+@media (min-width:1360px){:root{--cnvs-z:1.044}}
+@media (min-width:1440px){:root{--cnvs-z:1.088}}
+@media (min-width:1520px){:root{--cnvs-z:1.131}}
+@media (min-width:1600px){:root{--cnvs-z:1.175}}
+@media (min-width:1680px){:root{--cnvs-z:1.219}}
+@media (min-width:1760px){:root{--cnvs-z:1.263}}
+@media (min-width:1840px){:root{--cnvs-z:1.306}}
+@media (min-width:1920px){:root{--cnvs-z:1.35}}
+@media (min-width:2000px){:root{--cnvs-z:1.394}}
+@media (min-width:2080px){:root{--cnvs-z:1.438}}
+@media (min-width:2160px){:root{--cnvs-z:1.481}}
+@media (min-width:2240px){:root{--cnvs-z:1.525}}
+@media (min-width:2320px){:root{--cnvs-z:1.569}}
+@media (min-width:2400px){:root{--cnvs-z:1.612}}
+@media (min-width:2480px){:root{--cnvs-z:1.656}}
+@media (min-width:2560px){:root{--cnvs-z:1.7}}
+@media (min-width:2640px){:root{--cnvs-z:1.744}}
+@media (min-width:2720px){:root{--cnvs-z:1.788}}
+@media (min-width:2800px){:root{--cnvs-z:1.831}}
+@media (min-width:2880px){:root{--cnvs-z:1.875}}
+@media (min-width:2960px){:root{--cnvs-z:1.919}}
+@media (min-width:3040px){:root{--cnvs-z:1.963}}
+@media (min-width:3120px){:root{--cnvs-z:2.006}}
+@media (min-width:3200px){:root{--cnvs-z:2.05}}
+@media (min-width:3280px){:root{--cnvs-z:2.094}}
+@media (min-width:3360px){:root{--cnvs-z:2.138}}
+@media (min-width:3440px){:root{--cnvs-z:2.181}}
+@media (min-width:3520px){:root{--cnvs-z:2.225}}
+@media (min-width:3600px){:root{--cnvs-z:2.269}}
+@media (min-width:3680px){:root{--cnvs-z:2.313}}
+@media (min-width:3760px){:root{--cnvs-z:2.356}}
+@media (min-width:3840px){:root{--cnvs-z:2.4}}
+.post-body > .sbz-lec{zoom:var(--cnvs-z)!important}
+.eh-art-cab{zoom:var(--cnvs-z)!important}
+#eh-home{zoom:var(--cnvs-z)!important}
+@media (min-width:896px){.sbz-lec figure.sl-fig{width:min(var(--cnvs-wide),calc((100vw - 2*var(--cnvs-gutter))/var(--cnvs-z)))!important;max-width:none!important;margin-left:50%!important;margin-right:0!important;transform:translateX(-50%)!important}}
+@media (min-width:896px){.eh-art-cab{width:min(var(--cnvs-wide),calc((100vw - 2*var(--cnvs-gutter))/var(--cnvs-z)))!important;max-width:none!important;margin-left:50%!important;margin-right:0!important;transform:translateX(-50%)!important}}
+}
