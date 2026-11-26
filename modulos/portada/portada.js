@@ -8,7 +8,7 @@
   var item=D.body.classList.contains('eh-item'),path=location.pathname;
 
   /* Sección activa en la barra */
-  var COL={'Philately':{s:'sellos',nom:'Sellos',rot:'Filatelia',intro:'Estampas de Venezuela y del mundo, una a una: qué mostraban, quién las encargó y qué historia hay detrás. Cada artículo parte de un sello y termina en un país, una guerra o una época.',ser:[['Venezuela en sellos','Venezuela'],['El mundo en sellos','El mundo']]},'Numismatics':{s:'numismatica',nom:'Numismática',rot:'Numismática',intro:'Monedas y billetes que cuentan cómo se fabricó, se falsificó y se perdió el dinero. Empezamos por el primer billete de Venezuela, el de 1811.',ser:[['Venezuela en billetes','Venezuela en billetes']]}};
+  var COL={'Philately':{s:'sellos',nom:'Sellos',rot:'Filatelia',intro:'Estampas de Venezuela y del mundo, una a una: qué mostraban, quién las encargó y qué historia hay detrás. Cada artículo parte de un sello y termina en un país, una guerra o una época.',ser:[['Venezuela en sellos','Venezuela'],['El mundo en sellos','El mundo']]},'Numismatics':{s:'numismatica',nom:'Numismática',rot:'Numismática',intro:'Monedas y billetes que cuentan cómo se fabricó, se falsificó y se perdió el dinero. Una historia del dinero de Venezuela, capítulo a capítulo: de las monedas del virreinato al primer billete de 1811 y más allá.',ser:[['El dinero de Venezuela','El dinero de Venezuela']]}};
   var mc=path.match(/^\/search\/label\/([^/]+)/),COLX=null;
   if(!item&&mc){try{COLX=COL[decodeURIComponent(mc[1])]||null;}catch(e){}}
   var sec=item?(/mapoteca/.test(path)?'mapoteca':/centro-de-genealogia/.test(path)?'urdaneta':/^\/p\//.test(path)?'':'articulos'):(COLX?COLX.s:'portada');
