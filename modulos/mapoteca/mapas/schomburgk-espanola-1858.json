@@ -1,0 +1,19 @@
+{
+ "id": "schomburgk-espanola-1858",
+ "title": "Mapa de la isla de Santo Domingo (Schomburgk) · 1858",
+ "image": "schomburgk-espanola-1858.webp",
+ "limits": [
+  [
+   17.5306,
+   -74.7816
+  ],
+  [
+   20.0151,
+   -68.1192
+  ]
+ ],
+ "projection": "Web Mercator (original: proyección local de la isla)",
+ "fit": "afín, 19 puntos de control",
+ "mean_error_km": 5,
+ "source": "Biblioteca Nacional de Francia (Gallica) vía Wikimedia Commons, dominio público"
+}
