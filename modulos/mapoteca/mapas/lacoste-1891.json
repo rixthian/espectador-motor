@@ -1,0 +1,19 @@
+{
+ "id": "lacoste-1891",
+ "title": "Nuevo mapa de América Central y Antillas (Lacoste) · 1891",
+ "image": "lacoste-1891.webp",
+ "limits": [
+  [
+   5.0598,
+   -99.0
+  ],
+  [
+   31.4104,
+   -59.85
+  ]
+ ],
+ "projection": "Web Mercator (original: sinusoidal, meridiano de París)",
+ "fit": "proyección original reconstruida y comprobada con 16 ciudades",
+ "mean_error_km": 30,
+ "source": "Biblioteca Nacional de Francia (Gallica) vía Wikimedia Commons, dominio público"
+}
