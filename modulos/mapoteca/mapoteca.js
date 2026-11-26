@@ -24,7 +24,7 @@ var b0=null;try{b0=localStorage.getItem('mt-base')}catch(e){}
 ponBase(capas[b0]?b0:(oscuro?'Noche':'Calles'));
 /* Mapas antiguos */
 var PROPIOS={'g:codazzi-1840':{img:'codazzi-1840.webp',b:[[3.6,-75.2625],[12.0349,-60.95]],km:25},'g:gumilla-1741':{img:'gumilla-1741.webp',b:[[1.7649,-77.4938],[12.4887,-51.8663]],km:140},'g:acosta-1847':{img:'acosta-1847.webp',b:[[-2.0682,-80.0385],[12.728,-66.8269]],km:20},'g:brue-1823':{img:'brue-colombia-1823.webp',b:[[-3.5647,-82.2123],[14.0407,-61.32]],km:47},'g:lacoste-1891':{img:'lacoste-1891.webp',b:[[5.0598,-99.0],[31.4104,-59.85]],km:30},'g:dufour-cuba-1867':{img:'dufour-cuba-1867.webp',b:[[19.6307,-85.1658],[23.4246,-73.9017]],km:9},'g:colton-pr-1886':{img:'colton-pr-1886.webp',b:[[17.8294,-67.3758],[18.5845,-65.4188]],km:4},'g:newmap-jamaica-1755':{img:'newmap-jamaica-1755.webp',b:[[17.7156,-78.4426],[18.6031,-76.0712]],km:8},'g:schomburgk-espanola-1858':{img:'schomburgk-espanola-1858.webp',b:[[17.5306,-74.7816],[20.0151,-68.1192]],km:5},'g:bermuda-admiralty-1827':{img:'bermuda-admiralty-1827.webp',b:[[32.2221,-64.9985],[32.4974,-64.5925]],km:0.3},'g:bahamas-lucayas-1782':{img:'bahamas-lucayas-1782.webp',b:[[24.4353,-79.4975],[27.5343,-76.3075]],km:26}};
-var MAPAS_URL='https://cdn.jsdelivr.net/gh/rixthian/espectador-motor@6c90e034d93f4718819fc8919bac891edfafa72d/modulos/mapoteca/mapas/';
+var MAPAS_URL='https://cdn.jsdelivr.net/gh/rixthian/espectador-motor@6260cf020d48f61aaa8ed4b64004e686816bea7f/modulos/mapoteca/mapas/';
 var OLD=[
 ['Ajuste propio (error medido)',[
 ['g:codazzi-1840','Venezuela político (Codazzi) · 1840 · ajuste propio','Mapa político de Venezuela del atlas de Codazzi, encajado sobre el mapa actual con 25 puntos de control. Error medio: unos 25 km. Dominio público.'],
