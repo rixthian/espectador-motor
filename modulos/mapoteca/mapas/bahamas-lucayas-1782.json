@@ -1,0 +1,19 @@
+{
+ "id": "bahamas-lucayas-1782",
+ "title": "Islas Lucayas (Bahamas), noroeste · 1782",
+ "image": "bahamas-lucayas-1782.webp",
+ "limits": [
+  [
+   24.4353,
+   -79.4975
+  ],
+  [
+   27.5343,
+   -76.3075
+  ]
+ ],
+ "projection": "Web Mercator",
+ "fit": "traslación y escala, 10 puntos de control",
+ "mean_error_km": 26,
+ "source": "Biblioteca del Congreso de EE. UU., dominio público"
+}

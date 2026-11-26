@@ -1,0 +1,19 @@
+{
+ "id": "bermuda-admiralty-1827",
+ "title": "Bermudas (Admiralty) · 1827",
+ "image": "bermuda-admiralty-1827.webp",
+ "limits": [
+  [
+   32.2221,
+   -64.9985
+  ],
+  [
+   32.4974,
+   -64.5925
+  ]
+ ],
+ "projection": "Web Mercator",
+ "fit": "ajuste por contorno de costa (ICP) contra Natural Earth",
+ "mean_error_km": 0.3,
+ "source": "Almirantazgo británico, vía Wikimedia Commons, dominio público"
+}
