@@ -25,6 +25,33 @@
     if(e.key==='/'&&!/^(INPUT|TEXTAREA|SELECT)$/.test((e.target.tagName||''))&&!e.target.isContentEditable&&!e.ctrlKey&&!e.metaKey){e.preventDefault();$('eh-q').focus();}
   });
 
+  /* Menú automático: toda página publicada en Blogger entra sola en Explorar.
+     Se omiten las que ya están en el menú y las que viven en el pie. */
+  (function(){
+    var SOLO_PIE=/^\/p\/(contacto[^/]*|legal-y-uso|mapa-del-sitio)(\.html)?$/i;
+    function ruta(h){return String(h||'').replace(/^https?:\/\/[^/]+/,'').replace(/[?#].*$/,'');}
+    function pinta(L){
+      var ya={};[].forEach.call(D.querySelectorAll('#p-panel a, #p-cats a'),function(a){ya[ruta(a.getAttribute('href'))]=1;});
+      var N=L.filter(function(x){return x.u&&!ya[x.u]&&!SOLO_PIE.test(x.u);});
+      if(!N.length)return;
+      N.sort(function(a,b){return a.t.localeCompare(b.t,'es');});
+      var col=D.createElement('div');
+      col.id='p-auto';
+      col.innerHTML='<h4>Más páginas</h4><ul>'+N.map(function(x){return '<li><a href="'+esc(x.u)+'">'+esc(x.t)+'</a></li>';}).join('')+'</ul>';
+      var ult=$('p-ult'),destino=ult&&ult.parentNode;
+      if(destino&&destino.parentNode&&!$('p-auto'))destino.parentNode.insertBefore(col,destino);
+    }
+    function lista(j){return ((j.feed&&j.feed.entry)||[]).map(function(e){var l=(e.link||[]).find(function(x){return x.rel==='alternate';});return {t:e.title.$t,u:l?ruta(l.href):''};});}
+    var K='eh-menu-paginas',L=null;
+    try{var g=JSON.parse(sessionStorage.getItem(K)||'null');if(g&&Date.now()-g.t<600000)L=g.l;}catch(e){}
+    if(L){pinta(L);return;}
+    fetch('/feeds/pages/summary?alt=json&max-results=50').then(function(r){return r.ok?r.json():null;}).then(function(j){
+      if(!j)return;var l=lista(j);
+      try{sessionStorage.setItem(K,JSON.stringify({t:Date.now(),l:l}));}catch(e){}
+      pinta(l);
+    }).catch(function(){});
+  })();
+
   /* Fecha de hoy */
   try{var f=new Date().toLocaleDateString('es-ES',{weekday:'long',day:'numeric',month:'long',year:'numeric'});$('p-fecha').textContent=f.charAt(0).toUpperCase()+f.slice(1);}catch(e){}
 

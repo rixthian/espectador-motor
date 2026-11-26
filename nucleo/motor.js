@@ -30,7 +30,7 @@
     "modulos/mapoteca/mapoteca.js": "sha384-HNH0Fh53E0sSrd6vapSfGIS/PoWCzKxSxXAYwHvdl78YQ/+6vYzOjFcW3R2B1ecZ",
     "modulos/panel/panel.html": "sha384-iydmN6g/Wx2OqU1le5tL4jeXSHAdH1VGb482sAwKhGgtfFce8Kv5grsmVRmJDKH4",
     "modulos/portada/portada.html": "sha384-868/JDis75zlvPKHUAHCqmffoY0u0ESqqKmEsqE4h7gIc+kgXR/wY4SqN6Eee7np",
-    "modulos/portada/portada.js": "sha384-hBebJ/WdtI7OetxpAQhPveKgFtMjm2iNgpkn4g+jUpSr/5A6SLURe3ceekngj6HI",
+    "modulos/portada/portada.js": "sha384-YPL5otoYBHX7AdesDT9Tf7yhY6R5x3j/FbYgH7/uQQDGHiCCLuIvTSXsENtDuD81",
     "modulos/puente/puente.js": "sha384-qDhVg6ekXHbrryD0IsWPcv2fC+rFM+5zDRWlJYQSwuT44xZ2sPSK6yfiGIRQn/XH"
   };
 
