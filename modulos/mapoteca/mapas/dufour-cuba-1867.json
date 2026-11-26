@@ -1,0 +1,19 @@
+{
+ "id": "dufour-cuba-1867",
+ "title": "Mapa topográfico de la Isla de Cuba (Dufour) · 1867",
+ "image": "dufour-cuba-1867.webp",
+ "limits": [
+  [
+   19.6307,
+   -85.1658
+  ],
+  [
+   23.4246,
+   -73.9017
+  ]
+ ],
+ "projection": "Web Mercator (original: rectangular, meridiano de Cádiz)",
+ "fit": "afín, 12 puntos de control",
+ "mean_error_km": 9,
+ "source": "Biblioteca Nacional de Francia (Gallica) vía Wikimedia Commons, dominio público"
+}
