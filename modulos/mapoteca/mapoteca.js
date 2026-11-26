@@ -23,13 +23,13 @@ var oscuro=document.documentElement.dataset.tema=='dark'||(document.documentElem
 var b0=null;try{b0=localStorage.getItem('mt-base')}catch(e){}
 ponBase(capas[b0]?b0:(oscuro?'Noche':'Calles'));
 /* Mapas antiguos */
-var PROPIOS={'g:codazzi-1840':{img:'codazzi-1840.webp',b:[[3.6,-75.2625],[12.0349,-60.95]],km:25}};
-var MAPAS_URL='https://cdn.jsdelivr.net/gh/rixthian/espectador-motor@744b23b/modulos/mapoteca/mapas/';
+var PROPIOS={'g:codazzi-1840':{img:'codazzi-1840.webp',b:[[3.6,-75.2625],[12.0349,-60.95]],km:25},'g:gumilla-1741':{img:'gumilla-1741.webp',b:[[1.7649,-77.4938],[12.4887,-51.8663]],km:140}};
+var MAPAS_URL='https://cdn.jsdelivr.net/gh/rixthian/espectador-motor@ff131239200620cb3905b11562044dd379d355f2/modulos/mapoteca/mapas/';
 var OLD=[
 ['Ajuste propio (error medido)',[
-['g:codazzi-1840','Venezuela político (Codazzi) · 1840 · ajuste propio','Mapa político de Venezuela del atlas de Codazzi, encajado sobre el mapa actual con 25 puntos de control. Error medio: unos 25 km. Dominio público.']]],
+['g:codazzi-1840','Venezuela político (Codazzi) · 1840 · ajuste propio','Mapa político de Venezuela del atlas de Codazzi, encajado sobre el mapa actual con 25 puntos de control. Error medio: unos 25 km. Dominio público.'],
+['g:gumilla-1741','Misiones del Orinoco (Gumilla) · 1741 · ajuste referencial','Mapa esquemático de las misiones jesuitas del Orinoco, de José Gumilla. Ajuste referencial con 22 puntos de control: su error ronda los 140 km, así que sirve para ver dónde andaban los misioneros, no para medir distancias. Dominio público.']]],
 ['América',[
-[51967,'El Orinoco ilustrado (Gumilla) · s. XVIII','Mapa del río Orinoco que acompaña la obra del jesuita José Gumilla. Biblioteca Nacional de Colombia.'],
 [54835,'Virreinato de la Nueva Granada y Gobierno de Caracas · 1819','Lámina 69 del New Universal Atlas (1819). Biblioteca Nacional de Colombia.'],
 [55714,'Mapa físico y político de Venezuela (Codazzi) · 1840','Facsímil del gran mapa de Agustín Codazzi, publicado junto a su Atlas físico y político.'],
 [86391,'República de la Nueva Granada (Acosta) · 1847','Mapa del coronel Joaquín Acosta, dedicado al barón de Humboldt.'],
