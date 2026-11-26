@@ -1,0 +1,63 @@
+<div id="eeu-puerta" class="eeu-puerta" role="dialog" aria-modal="true" aria-labelledby="eeu-pt" hidden>
+<style>/*<![CDATA[*/
+html.eeu-lock,html.eeu-lock body{overflow:hidden!important}
+html.eeu-lock .sbz-cg{visibility:hidden}
+.eeu-puerta{position:fixed;inset:0;z-index:2147483600;display:flex;align-items:center;justify-content:center;padding:20px;background:radial-gradient(ellipse at 50% 30%,#fbf7ee 0%,#f1e8d4 55%,#e4d6b8 100%);transition:opacity .6s ease}
+.eeu-puerta[hidden]{display:none}
+.eeu-puerta.eeu-sale{opacity:0;pointer-events:none}
+.eeu-card{width:min(440px,100%);text-align:center;padding:38px 30px 30px;background:#fffdf8;border:1px solid #c9a24d;border-radius:4px;box-shadow:0 0 0 6px #fffdf8,0 0 0 7px rgba(201,162,77,.55),0 24px 60px rgba(60,40,10,.22)}
+.eeu-k{margin:0 0 6px;font:600 12px/1.4 'Cormorant Garamond',Georgia,serif;letter-spacing:.32em;text-transform:uppercase;color:#a07a2a}
+.eeu-card h2{margin:0 0 6px!important;padding:0!important;border:0!important;font:400 46px/1.15 'Pinyon Script','Cormorant Garamond',cursive!important;color:#13284d!important}
+.eeu-sub{margin:0 0 20px;font:italic 17px/1.5 'Cormorant Garamond',Georgia,serif;color:#4a4a4a}
+.eeu-f{display:flex;gap:8px;justify-content:center}
+.eeu-f input{flex:1 1 auto;min-width:0;padding:11px 14px;font:500 17px 'Cormorant Garamond',Georgia,serif;color:#13284d;background:#fff;border:1px solid rgba(19,40,77,.35);border-radius:3px;outline:none}
+.eeu-f input:focus{border-color:#c9a24d;box-shadow:0 0 0 3px rgba(201,162,77,.25)}
+.eeu-f button{padding:11px 18px;font:700 13px/1 'Cormorant Garamond',Georgia,serif;letter-spacing:.14em;text-transform:uppercase;color:#1b1203;background:linear-gradient(180deg,#f3dc98,#d4ad52);border:1px solid #9c7a1f;border-radius:3px;cursor:pointer}
+.eeu-f button:disabled,.eeu-f input:disabled{opacity:.6;cursor:default}
+.eeu-err{min-height:22px;margin:12px 0 0;font:600 14px 'Cormorant Garamond',Georgia,serif;color:#9b1c1c}
+.eeu-sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+.eeu-agita{animation:eeuAg .4s}
+@keyframes eeuAg{20%,60%{transform:translateX(-8px)}40%,80%{transform:translateX(8px)}}
+/*]]>*/</style>
+<div class="eeu-card"><p class="eeu-k">Euskal Etxea Urdaneta</p><h2 id="eeu-pt">Ongi etorri</h2><p class="eeu-sub">Bienvenido. Para entrar, escribe la clave de la casa.</p><form class="eeu-f" id="eeu-f" autocomplete="off"><label class="eeu-sr" for="eeu-i">Clave de acceso</label><input id="eeu-i" type="password" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Clave" required><button type="submit">Entrar</button></form><p class="eeu-err" id="eeu-err" aria-live="polite"></p></div>
+<script>//<![CDATA[
+/* Puerta de la Euskal Etxea Urdaneta. La casa no está en esta página: la
+   guarda Cloudflare y solo la entrega con la clave correcta (o con el pase
+   de la sesión, para no volver a pedirla al recargar). */
+(function(){
+var API='https://espectador-puente.espectador-historias.workers.dev/etxea/',K='eeu-t',d=document,g=d.getElementById('eeu-puerta'),casa=d.getElementById('eeu-casa');
+if(!g||!casa)return;
+var f=d.getElementById('eeu-f'),i=d.getElementById('eeu-i'),er=d.getElementById('eeu-err'),cd=g.querySelector('.eeu-card'),bt=f.querySelector('button');
+function pase(){try{return sessionStorage.getItem(K)||'';}catch(e){return '';}}
+function guarda(t){try{if(t){sessionStorage.setItem(K,t);}else{sessionStorage.removeItem(K);}}catch(e){}}
+function ocupado(si){i.disabled=si;bt.disabled=si;bt.textContent=si?'Abriendo…':'Entrar';}
+function foco(){setTimeout(function(){try{i.focus();}catch(e){}},300);}
+function aviso(m){er.textContent=m;cd.classList.remove('eeu-agita');void cd.offsetWidth;cd.classList.add('eeu-agita');}
+function pide(ruta,op){return fetch(API+ruta,op).then(function(r){if(r.status!==200){return {st:r.status};}return r.text().then(function(h){var t=r.headers.get('X-Etxea-Token');if(t){guarda(t);}return {st:200,html:h};});});}
+function entra(html){
+ casa.parentNode.replaceChild(d.createRange().createContextualFragment(html),casa);
+ g.classList.add('eeu-sale');d.documentElement.classList.remove('eeu-lock');
+ setTimeout(function(){if(g.parentNode){g.parentNode.removeChild(g);}try{window.dispatchEvent(new Event('resize'));}catch(e){}},650);
+}
+d.documentElement.classList.add('eeu-lock');g.hidden=false;
+var t=pase();
+if(t){
+ ocupado(true);
+ pide('contenido',{headers:{Authorization:'Bearer '+t}}).then(function(x){if(x.st===200){entra(x.html);}else{guarda('');ocupado(false);foco();}}).catch(function(){ocupado(false);foco();});
+}else{foco();}
+f.addEventListener('submit',function(e){
+ e.preventDefault();
+ var c=i.value||'';if(!c.trim()){return;}
+ er.textContent='';ocupado(true);
+ pide('abrir',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({clave:c})}).then(function(x){
+  if(x.st===200){i.value='';entra(x.html);return;}
+  ocupado(false);
+  if(x.st===401){aviso('Clave incorrecta. Inténtalo de nuevo.');i.select();}
+  else if(x.st===429){aviso('Demasiados intentos. Espera 15 minutos y vuelve a probar.');}
+  else{aviso('La casa no responde ahora. Inténtalo en un momento.');}
+ }).catch(function(){ocupado(false);aviso('No hay conexión con la casa. Revisa tu internet e inténtalo otra vez.');});
+});
+})();
+//]]></script>
+</div>
+<div id="eeu-casa"></div>

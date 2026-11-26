@@ -26,6 +26,11 @@ modulos/
     aura.js
 herramientas/
   huellas.py          Calcula las huellas SHA-384 y las escribe en el motor
+  fichas.js           Lee, escribe y retira fichas del árbol de la Etxea
+cloudflare/
+  etxea.mjs           Candado de la Euskal Etxea Urdaneta (pieza espectador-puente)
+modulos/etxea/
+  puerta.html         La puerta: lo único de la Etxea que vive en Blogger
 ```
 
 ## Cómo funciona
@@ -55,3 +60,13 @@ herramientas/
 - El blog nunca usa «la última versión»: cada cambio se activa a propósito.
 - Cada hoja lleva su huella SHA-384.
 - Aquí solo hay código. Ningún dato personal.
+
+## El candado de la Euskal Etxea Urdaneta
+
+La casa (el contenido de la página) no está en Blogger ni en este almacén. Vive
+en la base de datos de Cloudflare y la pieza `espectador-puente` solo la entrega
+con la clave correcta, comprobada en el servidor. En Blogger queda la puerta
+(`modulos/etxea/puerta.html`). Aquí no hay claves, huellas ni datos de personas.
+
+Pruebas: `node --test cloudflare/pruebas/etxea.test.mjs herramientas/pruebas/fichas.test.js`.
+La puerta se prueba en el navegador con `modulos/etxea/pruebas/puerta.prueba.js`.
