@@ -29,8 +29,8 @@
     "modulos/mapoteca/mapoteca.html": "sha384-w8Kw9g3RYPv8v+wQGvT3Qw+Qj42ed9eFZka4xWdTEF0yU56NUER/uH0VRFsvxOJE",
     "modulos/mapoteca/mapoteca.js": "sha384-k35T4AuX47wqWPxdF8CiABtbM2+x4Er7xtBU8wX9MrH9gDZ2HSjkj8TjXDNpcVUc",
     "modulos/panel/panel.html": "sha384-iydmN6g/Wx2OqU1le5tL4jeXSHAdH1VGb482sAwKhGgtfFce8Kv5grsmVRmJDKH4",
-    "modulos/portada/portada.html": "sha384-0KiTa2QlwXLdf3QCXa4H0Tu5u4/B0Pu2SmWMfxMPta6DzU06FrhvVfQRwwdZ+aft",
-    "modulos/portada/portada.js": "sha384-XXIZ1tw0iT4qfuPXxM+rNOhjsw7j5vQ2gpq1B19HNiy3vTV1LPK6h/9CQXj4OImM",
+    "modulos/portada/portada.html": "sha384-868/JDis75zlvPKHUAHCqmffoY0u0ESqqKmEsqE4h7gIc+kgXR/wY4SqN6Eee7np",
+    "modulos/portada/portada.js": "sha384-HiqDhGPlW+h6Vn2I4cJ4POG9GiSbuSqmff6urJxPzS2aOVbPY2JSqpfvimW6+KAh",
     "modulos/puente/puente.js": "sha384-qDhVg6ekXHbrryD0IsWPcv2fC+rFM+5zDRWlJYQSwuT44xZ2sPSK6yfiGIRQn/XH"
   };
 

@@ -57,7 +57,7 @@
     }
     function pinta(){
       var L=A.filter(function(a){return !act||a.cats.indexOf(act)>-1;});
-      grid.innerHTML=L.length?L.map(function(a){return '<a class="mini" href="'+esc(a.u)+'"><div class="im"><img alt="" loading="lazy" decoding="async" src="'+esc(foto(a.img,640))+'"></div><div class="etq"><span>'+esc(a.k)+'</span>'+AUD+'</div><h3>'+esc(a.t)+'</h3></a>';}).join(''):'<p class="vacio">Todavía no hay artículos en esta sección.</p>';
+      grid.innerHTML=L.length?L.map(function(a){return '<a class="mini" href="'+esc(a.u)+'"><div class="im"><img alt="" loading="lazy" decoding="async" src="'+esc(foto(a.img,640))+'"></div><div class="etq"><span>'+esc(a.k)+'</span>'+AUD+'</div><h3>'+esc(a.t)+'</h3></a>';}).join(''):'<p class="vacio">Todavía no hay artículos en esta sección. <a href="/">Volver a la portada</a></p>';
     }
     fil.innerHTML='<button type="button" data-c="" aria-pressed="true">Todos</button>'+CATX.filter(function(c){return A.some(function(a){return a.cats.indexOf(c[0])>-1;});}).map(function(c){return '<button type="button" data-c="'+esc(c[0])+'" aria-pressed="false">'+esc(c[1])+'</button>';}).join('');
     fil.addEventListener('click',function(e){var b=e.target.closest('button');if(!b)return;act=b.getAttribute('data-c');[].forEach.call(fil.querySelectorAll('button'),function(x){x.setAttribute('aria-pressed',x===b?'true':'false');});pinta();});
@@ -103,6 +103,6 @@
   }).catch(reserva).then(function(A){
     ultimos(A);
     if(!item)portada(A);
-  }).catch(function(){var r=$('p-racimo');if(r&&!item)r.innerHTML='<p class="vacio">No se pudieron cargar los artículos. Recarga en un momento.</p>';});
+  }).catch(function(){var r=$('p-racimo');if(r&&!item)r.innerHTML='<p class="vacio">No se pudieron cargar los artículos. Recarga en un momento.</p>';var g=$('p-grid');if(g)g.innerHTML='<p class="vacio">No se pudieron cargar los artículos. Recarga la página en un momento.</p>';});
   if(!item)quiz();
 })();
