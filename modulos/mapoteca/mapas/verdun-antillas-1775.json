@@ -1,0 +1,19 @@
+{
+ "id": "verdun-antillas-1775",
+ "title": "Antillas Menores, de Antigua a Barbados (Verdun, Borda y Pingré) · 1775",
+ "image": "verdun-antillas-1775.webp",
+ "limits": [
+  [
+   13.0466,
+   -62.3368
+  ],
+  [
+   17.5,
+   -59.8
+  ]
+ ],
+ "projection": "Web Mercator (original: carta plana con meridiano de París)",
+ "fit": "afín, 20 puntos de control",
+ "mean_error_km": 10,
+ "source": "Biblioteca Nacional y Universitaria de Estrasburgo vía Biblioteca Nacional de Francia (Gallica) y Wikimedia Commons, dominio público"
+}
