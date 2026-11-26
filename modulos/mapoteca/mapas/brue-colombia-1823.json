@@ -1,0 +1,19 @@
+{
+ "id": "brue-colombia-1823",
+ "title": "Carta de Colombia (Brué) · 1823",
+ "image": "brue-colombia-1823.webp",
+ "limits": [
+  [
+   -3.5647,
+   -82.2123
+  ],
+  [
+   14.0407,
+   -61.32
+  ]
+ ],
+ "projection": "Web Mercator",
+ "fit": "afín, 19 puntos de control",
+ "mean_error_km": 47,
+ "source": "Biblioteca Nacional de Francia (Gallica) vía Wikimedia Commons, dominio público"
+}
