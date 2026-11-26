@@ -24,7 +24,7 @@ var b0=null;try{b0=localStorage.getItem('mt-base')}catch(e){}
 ponBase(capas[b0]?b0:(oscuro?'Noche':'Calles'));
 /* Mapas antiguos */
 var PROPIOS={'g:codazzi-1840':{img:'codazzi-1840.webp',b:[[3.6,-75.2625],[12.0349,-60.95]],km:25}};
-var MAPAS_URL='https://cdn.jsdelivr.net/gh/rixthian/espectador-motor@main/modulos/mapoteca/mapas/';
+var MAPAS_URL='https://cdn.jsdelivr.net/gh/rixthian/espectador-motor@744b23b/modulos/mapoteca/mapas/';
 var OLD=[
 ['Ajuste propio (error medido)',[
 ['g:codazzi-1840','Venezuela político (Codazzi) · 1840 · ajuste propio','Mapa político de Venezuela del atlas de Codazzi, encajado sobre el mapa actual con 25 puntos de control. Error medio: unos 25 km. Dominio público.']]],
