@@ -8,7 +8,10 @@
   var item=D.body.classList.contains('eh-item'),path=location.pathname;
 
   /* Sección activa en la barra */
-  var sec=item?(/mapoteca/.test(path)?'mapoteca':/centro-de-genealogia/.test(path)?'urdaneta':/^\/p\//.test(path)?'':'articulos'):'portada';
+  var COL={'Philately':{s:'sellos',nom:'Sellos',rot:'Filatelia',intro:'Estampas de Venezuela y del mundo, una a una: qué mostraban, quién las encargó y qué historia hay detrás. Cada artículo parte de un sello y termina en un país, una guerra o una época.',ser:[['Venezuela en sellos','Venezuela'],['El mundo en sellos','El mundo']]},'Numismatics':{s:'numismatica',nom:'Numismática',rot:'Numismática',intro:'Monedas y billetes que cuentan cómo se fabricó, se falsificó y se perdió el dinero. Empezamos por el primer billete de Venezuela, el de 1811.',ser:[['Venezuela en billetes','Venezuela en billetes']]}};
+  var mc=path.match(/^\/search\/label\/([^/]+)/),COLX=null;
+  if(!item&&mc){try{COLX=COL[decodeURIComponent(mc[1])]||null;}catch(e){}}
+  var sec=item?(/mapoteca/.test(path)?'mapoteca':/centro-de-genealogia/.test(path)?'urdaneta':/^\/p\//.test(path)?'':'articulos'):(COLX?COLX.s:'portada');
   [].forEach.call(D.querySelectorAll('#p-cats a'),function(a){if(a.getAttribute('data-s')===sec){a.classList.add('on');a.setAttribute('aria-current','page');}});
 
   /* Panel Explorar */
@@ -44,12 +47,19 @@
     $('p-racimo').innerHTML=g+(l?'<div class="lista">'+l+'</div>':'');
 
     /* Catálogo con filtros */
-    var grid=$('p-grid'),fil=$('p-filtros'),act='';
+    var grid=$('p-grid'),fil=$('p-filtros'),act='',CATX=CAT;
+    if(COLX){
+      var ET=decodeURIComponent(mc[1]);A=A.filter(function(a){return a.cats.indexOf(ET)>-1;});CATX=COLX.ser;
+      var st=D.createElement('style');st.textContent='body.eh-serie #eh-home>section:not(#serie):not(#articulos),body.eh-serie #eh-home>.cita{display:none!important}body.eh-serie #eh-home>#serie{order:-2}body.eh-serie #eh-home>#articulos{order:-1}body.eh-serie #s-tit{margin:4px 0 0}';D.head.appendChild(st);
+      D.body.classList.add('eh-serie');$('serie').hidden=false;$('s-rot').textContent=COLX.rot;$('s-tit').textContent=COLX.nom;$('s-int').textContent=COLX.intro;
+      var ht=D.querySelector('#articulos h2.sec');if(ht)ht.textContent=A.length+(A.length===1?' artículo':' artículos');
+      D.title=COLX.nom+' · El Espectador de historias';
+    }
     function pinta(){
       var L=A.filter(function(a){return !act||a.cats.indexOf(act)>-1;});
       grid.innerHTML=L.length?L.map(function(a){return '<a class="mini" href="'+esc(a.u)+'"><div class="im"><img alt="" loading="lazy" decoding="async" src="'+esc(foto(a.img,640))+'"></div><div class="etq"><span>'+esc(a.k)+'</span>'+AUD+'</div><h3>'+esc(a.t)+'</h3></a>';}).join(''):'<p class="vacio">Todavía no hay artículos en esta sección.</p>';
     }
-    fil.innerHTML='<button type="button" data-c="" aria-pressed="true">Todos</button>'+CAT.filter(function(c){return A.some(function(a){return a.cats.indexOf(c[0])>-1;});}).map(function(c){return '<button type="button" data-c="'+esc(c[0])+'" aria-pressed="false">'+esc(c[1])+'</button>';}).join('');
+    fil.innerHTML='<button type="button" data-c="" aria-pressed="true">Todos</button>'+CATX.filter(function(c){return A.some(function(a){return a.cats.indexOf(c[0])>-1;});}).map(function(c){return '<button type="button" data-c="'+esc(c[0])+'" aria-pressed="false">'+esc(c[1])+'</button>';}).join('');
     fil.addEventListener('click',function(e){var b=e.target.closest('button');if(!b)return;act=b.getAttribute('data-c');[].forEach.call(fil.querySelectorAll('button'),function(x){x.setAttribute('aria-pressed',x===b?'true':'false');});pinta();});
     pinta();
 
