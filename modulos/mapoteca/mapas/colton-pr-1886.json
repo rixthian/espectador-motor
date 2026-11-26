@@ -1,0 +1,19 @@
+{
+ "id": "colton-pr-1886",
+ "title": "Mapa topográfico de la Isla de Puerto Rico (Colton) · 1886",
+ "image": "colton-pr-1886.webp",
+ "limits": [
+  [
+   17.8294,
+   -67.3758
+  ],
+  [
+   18.5845,
+   -65.4188
+  ]
+ ],
+ "projection": "Web Mercator (original: proyección local de la isla)",
+ "fit": "afín, 10 puntos de control",
+ "mean_error_km": 4,
+ "source": "Biblioteca Nacional de Francia (Gallica), dominio público"
+}
