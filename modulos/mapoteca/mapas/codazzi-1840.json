@@ -1,0 +1,10 @@
+{
+  "id": "codazzi-1840",
+  "titulo": "Mapa político de Venezuela, 1840 (Codazzi)",
+  "imagen": "codazzi-1840.webp",
+  "limites": { "sur": 3.6, "oeste": -75.2625, "norte": 12.0349, "este": -60.95 },
+  "proyeccion": "Mercator web (EPSG:3857)",
+  "ajuste": "25 puntos de control, afín + spline de placa delgada",
+  "error_medio_km": 25,
+  "fuente": "Wikimedia Commons, dominio público (atlas de Codazzi, 1840)"
+}

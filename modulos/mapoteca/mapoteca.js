@@ -23,7 +23,11 @@ var oscuro=document.documentElement.dataset.tema=='dark'||(document.documentElem
 var b0=null;try{b0=localStorage.getItem('mt-base')}catch(e){}
 ponBase(capas[b0]?b0:(oscuro?'Noche':'Calles'));
 /* Mapas antiguos */
+var PROPIOS={'g:codazzi-1840':{img:'codazzi-1840.webp',b:[[3.6,-75.2625],[12.0349,-60.95]],km:25}};
+var MAPAS_URL='https://cdn.jsdelivr.net/gh/rixthian/espectador-motor@744b23b/modulos/mapoteca/mapas/';
 var OLD=[
+['Ajuste propio (error medido)',[
+['g:codazzi-1840','Venezuela político (Codazzi) · 1840 · ajuste propio','Mapa político de Venezuela del atlas de Codazzi, encajado sobre el mapa actual con 25 puntos de control. Error medio: unos 25 km. Dominio público.']]],
 ['América',[
 [51967,'El Orinoco ilustrado (Gumilla) · s. XVIII','Mapa del río Orinoco que acompaña la obra del jesuita José Gumilla. Biblioteca Nacional de Colombia.'],
 [54835,'Virreinato de la Nueva Granada y Gobierno de Caracas · 1819','Lámina 69 del New Universal Atlas (1819). Biblioteca Nacional de Colombia.'],
@@ -43,6 +47,8 @@ sel.innerHTML='<option value="">Ninguno · solo el presente</option>'+OLD.map(fu
 map.createPane('antiguo');map.getPane('antiguo').style.zIndex=350;
 sel.onchange=function(){ponOld(sel.value,true)};
 function ponOld(id,volar){if(oldLay){map.removeLayer(oldLay);oldLay=null}$('mt-oldctl').hidden=!id;if(!id){cortina(false);return}
+var P=PROPIOS[id];
+if(P){oldLay=L.imageOverlay(MAPAS_URL+P.img,P.b,{pane:'antiguo',opacity:$('mt-op').value/100,attribution:'Mapa antiguo: ajuste propio'}).addTo(map);$('mt-oldinfo').textContent=info[id][2];if(volar)map.flyToBounds(P.b,{duration:1.2});cortina($('mt-cort').checked);return}
 oldLay=L.tileLayer('https://mapwarper.net/maps/tile/'+id+'/{z}/{x}/{y}.png',{pane:'antiguo',opacity:$('mt-op').value/100,maxZoom:19,attribution:'Mapa antiguo: Map Warper'}).addTo(map);
 $('mt-oldinfo').innerHTML=info[id][2]+' <a href="https://mapwarper.net/maps/'+id+'" target="_blank" rel="noopener">Ficha</a>';
 if(volar){$('mt-load').style.display='block';fetch('https://mapwarper.net/api/v1/maps/'+id+'.json').then(function(r){return r.json()}).then(function(j){var b=j.data.attributes.bbox.split(',').map(Number);map.flyToBounds([[b[1],b[0]],[b[3],b[2]]],{duration:1.2})}).catch(function(){}).then(function(){$('mt-load').style.display='none'})}
