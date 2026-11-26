@@ -1,0 +1,11 @@
+{
+  "id": "gumilla-1741",
+  "titulo": "Mapa de la provincia y misiones de la Compañía de Jesús del Nuevo Reino de Granada (Gumilla, 1741)",
+  "imagen": "gumilla-1741.webp",
+  "limites": { "sur": 1.7649, "oeste": -77.4938, "norte": 12.4887, "este": -51.8663 },
+  "proyeccion": "Mercator web (EPSG:3857)",
+  "ajuste": "22 puntos de control, ajuste afín (sin deformar el grabado)",
+  "error_medio_km": 140,
+  "nota": "Mapa esquemático del siglo XVIII: referencial, no sirve para medir distancias.",
+  "fuente": "Biblioteca Nacional de Francia (Gallica) vía Wikimedia Commons, dominio público"
+}
