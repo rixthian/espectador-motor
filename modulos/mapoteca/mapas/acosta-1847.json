@@ -1,0 +1,19 @@
+{
+ "id": "acosta-1847",
+ "title": "Mapa de la República de la Nueva Granada (Acosta) · 1847",
+ "image": "acosta-1847.webp",
+ "limits": [
+  [
+   -2.0682,
+   -80.0385
+  ],
+  [
+   12.728,
+   -66.8269
+  ]
+ ],
+ "projection": "Web Mercator",
+ "fit": "affine, 24 puntos de control",
+ "mean_error_km": 20,
+ "source": "Wikimedia Commons (dominio público)"
+}
