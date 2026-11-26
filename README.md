@@ -70,3 +70,5 @@ con la clave correcta, comprobada en el servidor. En Blogger queda la puerta
 
 Pruebas: `node --test cloudflare/pruebas/etxea.test.mjs herramientas/pruebas/fichas.test.js`.
 La puerta se prueba en el navegador con `modulos/etxea/pruebas/puerta.prueba.js`.
+El polvo dorado de la casa (que no se acelere al esconder y mostrar la ventana, ni en
+pantallas de 120 Hz) se prueba con `node modulos/etxea/pruebas/polvo.prueba.js casa.html`.
