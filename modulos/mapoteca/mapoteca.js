@@ -23,8 +23,8 @@ var oscuro=document.documentElement.dataset.tema=='dark'||(document.documentElem
 var b0=null;try{b0=localStorage.getItem('mt-base')}catch(e){}
 ponBase(capas[b0]?b0:(oscuro?'Noche':'Calles'));
 /* Mapas antiguos */
-var PROPIOS={'g:codazzi-1840':{img:'codazzi-1840.webp',b:[[3.6,-75.2625],[12.0349,-60.95]],km:25},'g:gumilla-1741':{img:'gumilla-1741.webp',b:[[1.7649,-77.4938],[12.4887,-51.8663]],km:140},'g:acosta-1847':{img:'acosta-1847.webp',b:[[-2.0682,-80.0385],[12.728,-66.8269]],km:20},'g:brue-1823':{img:'brue-colombia-1823.webp',b:[[-3.5647,-82.2123],[14.0407,-61.32]],km:47},'g:lacoste-1891':{img:'lacoste-1891.webp',b:[[5.0598,-99.0],[31.4104,-59.85]],km:30},'g:dufour-cuba-1867':{img:'dufour-cuba-1867.webp',b:[[19.6307,-85.1658],[23.4246,-73.9017]],km:9}};
-var MAPAS_URL='https://cdn.jsdelivr.net/gh/rixthian/espectador-motor@e4ef75dec0218de0c12558144683cc43eb8d1ab1/modulos/mapoteca/mapas/';
+var PROPIOS={'g:codazzi-1840':{img:'codazzi-1840.webp',b:[[3.6,-75.2625],[12.0349,-60.95]],km:25},'g:gumilla-1741':{img:'gumilla-1741.webp',b:[[1.7649,-77.4938],[12.4887,-51.8663]],km:140},'g:acosta-1847':{img:'acosta-1847.webp',b:[[-2.0682,-80.0385],[12.728,-66.8269]],km:20},'g:brue-1823':{img:'brue-colombia-1823.webp',b:[[-3.5647,-82.2123],[14.0407,-61.32]],km:47},'g:lacoste-1891':{img:'lacoste-1891.webp',b:[[5.0598,-99.0],[31.4104,-59.85]],km:30},'g:dufour-cuba-1867':{img:'dufour-cuba-1867.webp',b:[[19.6307,-85.1658],[23.4246,-73.9017]],km:9},'g:colton-pr-1886':{img:'colton-pr-1886.webp',b:[[17.8294,-67.3758],[18.5845,-65.4188]],km:4}};
+var MAPAS_URL='https://cdn.jsdelivr.net/gh/rixthian/espectador-motor@d0c9db8b29874db7d336398a8689aceabc850c09/modulos/mapoteca/mapas/';
 var OLD=[
 ['Ajuste propio (error medido)',[
 ['g:codazzi-1840','Venezuela político (Codazzi) · 1840 · ajuste propio','Mapa político de Venezuela del atlas de Codazzi, encajado sobre el mapa actual con 25 puntos de control. Error medio: unos 25 km. Dominio público.'],
@@ -32,7 +32,8 @@ var OLD=[
 ['g:acosta-1847','Nueva Granada (Acosta) · 1847 · ajuste propio','Mapa de la República de la Nueva Granada del coronel Joaquín Acosta, dedicado al barón de Humboldt. Ajuste propio con 24 puntos de control: error medio de unos 20 km. Dominio público.'],
 ['g:brue-1823','Colombia: Venezuela, Nueva Granada y Quito (Brué) · 1823 · ajuste propio','Carta de Colombia de A. H. Brué, hecha con las observaciones astronómicas de Humboldt. Ajuste propio con 19 puntos de control: error medio de unos 47 km, mayor en la cordillera oriental. Dominio público (Biblioteca Nacional de Francia).'],
 ['g:lacoste-1891','Golfo de México, Centroamérica y Antillas (Lacoste) · 1891 · ajuste propio','Nuevo mapa de América Central y Antillas, trazado por Ch. Lacoste en París. Su proyección original usa el meridiano de París; la reconstruí y la comprobé con 16 ciudades: error medio de unos 30 km. Dominio público (Biblioteca Nacional de Francia).'],
-['g:dufour-cuba-1867','Isla de Cuba (Dufour) · 1867 · ajuste propio','Mapa topográfico de la isla de Cuba, compuesto por A. H. Dufour en París, con ferrocarriles, partidos y poblaciones. Ajuste propio con 12 puntos de control: error medio de unos 9 km. Dominio público (Biblioteca Nacional de Francia).']]],
+['g:dufour-cuba-1867','Isla de Cuba (Dufour) · 1867 · ajuste propio','Mapa topográfico de la isla de Cuba, compuesto por A. H. Dufour en París, con ferrocarriles, partidos y poblaciones. Ajuste propio con 12 puntos de control: error medio de unos 9 km. Dominio público (Biblioteca Nacional de Francia).']
+,['g:colton-pr-1886','Puerto Rico (Colton) · 1886 · ajuste propio','Mapa topográfico de la isla de Puerto Rico con sus departamentos, ríos, caminos y relieve. Ajuste propio con 10 puntos de control: error medio de unos 4 km. Dominio público (Biblioteca Nacional de Francia).']]],
 ['América',[
 [54835,'Virreinato de la Nueva Granada y Gobierno de Caracas · 1819','Lámina 69 del New Universal Atlas (1819). Biblioteca Nacional de Colombia.'],
 [55714,'Mapa físico y político de Venezuela (Codazzi) · 1840','Facsímil del gran mapa de Agustín Codazzi, publicado junto a su Atlas físico y político.'],
