@@ -1,0 +1,19 @@
+{
+ "id": "newmap-jamaica-1755",
+ "title": "A New Map of Jamaica (Patrick Browne) · 1755",
+ "image": "newmap-jamaica-1755.webp",
+ "limits": [
+  [
+   17.7156,
+   -78.4426
+  ],
+  [
+   18.6031,
+   -76.0712
+  ]
+ ],
+ "projection": "Web Mercator (original: proyección local, mapa referencial)",
+ "fit": "afín, 16 puntos de control",
+ "mean_error_km": 8,
+ "source": "Biblioteca Nacional de Francia vía Wikimedia Commons, dominio público"
+}
