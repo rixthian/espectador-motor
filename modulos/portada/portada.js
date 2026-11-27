@@ -8,7 +8,7 @@
   var item=D.body.classList.contains('eh-item'),path=location.pathname;
 
   /* Sección activa en la barra */
-  var COL={'Chronicles':{s:'cronicas',nom:'Crónicas',rot:'Crónicas',intro:'Historias largas y bien documentadas, contadas desde las fuentes originales: quién escribió, qué vio, qué se calló y cuánto creerle. Empezamos por El Dorado.',ser:[['El Dorado','El Dorado']]},'Philately':{s:'sellos',nom:'Sellos',rot:'Filatelia',intro:'Estampas de Venezuela y del mundo, una a una: qué mostraban, quién las encargó y qué historia hay detrás. Cada artículo parte de un sello y termina en un país, una guerra o una época.',ser:[['Venezuela en sellos','Venezuela'],['El mundo en sellos','El mundo']]},'Numismatics':{s:'numismatica',nom:'Numismática',rot:'Numismática',intro:'Monedas y billetes que cuentan cómo se fabricó, se falsificó y se perdió el dinero. Una historia del dinero de Venezuela, capítulo a capítulo: de las monedas del virreinato al primer billete de 1811 y más allá.',ser:[['El dinero de Venezuela','El dinero de Venezuela']]}};
+  var COL={'Chronicles':{s:'cronicas',nom:'Crónicas',rot:'Crónicas',intro:'Historias largas y bien documentadas, contadas desde las fuentes originales: quién escribió, qué vio, qué se calló y cuánto creerle. Cada serie se lee en orden, de la primera a la última.',ser:[['El Dorado','El Dorado']]},'Philately':{s:'sellos',nom:'Sellos',rot:'Filatelia',intro:'Estampas de Venezuela y del mundo, una a una: qué mostraban, quién las encargó y qué historia hay detrás. Cada artículo parte de un sello y termina en un país, una guerra o una época.',ser:[['Venezuela en sellos','Venezuela'],['El mundo en sellos','El mundo']]},'Numismatics':{s:'numismatica',nom:'Numismática',rot:'Numismática',intro:'Monedas y billetes que cuentan cómo se fabricó, se falsificó y se perdió el dinero. Una historia del dinero de Venezuela, capítulo a capítulo: de las monedas del virreinato al primer billete de 1811 y más allá.',ser:[['El dinero de Venezuela','El dinero de Venezuela']]}};
   var mc=path.match(/^\/search\/label\/([^/]+)/),COLX=null;
   if(!item&&mc){try{COLX=COL[decodeURIComponent(mc[1])]||null;}catch(e){}}
   var sec=item?(/mapoteca/.test(path)?'mapoteca':/centro-de-genealogia/.test(path)?'urdaneta':/^\/p\//.test(path)?'':'articulos'):(COLX?COLX.s:'portada');
@@ -60,10 +60,12 @@
   function foto(u,w){return u?u.replace(/\/(?:s|w)\d+(?:-[a-z0-9-]+)?\//,'/w'+w+'/'):'';}
   function texto(h){var t=D.createElement('textarea');t.innerHTML=h;return t.value;}
 
+  var RE_SER=/^Crónica\s+([IVXLCDM]+)\s*·\s*([^·]+?)\s*·/;
+  function rom(r){var V={I:1,V:5,X:10,L:50,C:100,D:500,M:1000},t=0,p=0,i,x;for(i=r.length-1;i>=0;i--){x=V[r[i]];t+=x<p?-x:x;p=Math.max(p,x);}return t;}
   function lee(e){
     var l=(e.link||[]).find(function(x){return x.rel==='alternate';});if(!l)return null;
     var c=e.content?e.content.$t:'',m=c.match(/<img[^>]+src="([^"]+)"/),k=c.match(/class="sl-kicker"[^>]*>([^<]+)</),d=c.match(/class="sl-dek[^"]*"[^>]*>([^<]+)</);
-    return {t:e.title.$t,u:l.href.replace(/^https?:\/\/[^/]+/,''),img:m?m[1]:'',k:k?texto(k[1]).split('·')[0].trim():'Artículo',dek:d?texto(d[1]).trim():'',cats:(e.category||[]).map(function(x){return x.term;})};
+    var S=e.title.$t.match(RE_SER);return {serie:S?S[2]:'',n:S?rom(S[1]):0,t:e.title.$t,u:l.href.replace(/^https?:\/\/[^/]+/,''),img:m?m[1]:'',k:k?texto(k[1]).split('·')[0].trim():'Artículo',dek:d?texto(d[1]).trim():'',cats:(e.category||[]).map(function(x){return x.term;})};
   }
 
   function ultimos(A){$('p-ult').innerHTML=A.slice(0,3).map(function(a){return '<a href="'+esc(a.u)+'"><img alt="" loading="lazy" src="'+esc(foto(a.img,320))+'"><b>'+esc(a.t)+'</b></a>';}).join('');}
@@ -76,17 +78,17 @@
     /* Catálogo con filtros */
     var grid=$('p-grid'),fil=$('p-filtros'),act='',CATX=CAT;
     if(COLX){
-      var ET=decodeURIComponent(mc[1]);A=A.filter(function(a){return a.cats.indexOf(ET)>-1;});CATX=COLX.ser;
+      var ET=decodeURIComponent(mc[1]);A=A.filter(function(a){return a.cats.indexOf(ET)>-1;});CATX=COLX.ser;var sr=[];A.forEach(function(a){if(a.serie&&sr.indexOf(a.serie)<0)sr.push(a.serie);});if(sr.length){CATX=sr.map(function(s){return [s,s];});var ord={};sr.forEach(function(s,i){ord[s]=i;});A=A.slice().sort(function(a,b){var x=a.serie?ord[a.serie]:99,y=b.serie?ord[b.serie]:99;return x-y||a.n-b.n;});}
       var st=D.createElement('style');st.textContent='body.eh-serie #eh-home>section:not(#serie):not(#articulos),body.eh-serie #eh-home>.cita{display:none!important}body.eh-serie #eh-home>#serie{order:-2}body.eh-serie #eh-home>#articulos{order:-1}body.eh-serie #s-tit{margin:4px 0 0}';D.head.appendChild(st);
       D.body.classList.add('eh-serie');$('serie').hidden=false;$('s-rot').textContent=COLX.rot;$('s-tit').textContent=COLX.nom;$('s-int').textContent=COLX.intro;
       var ht=D.querySelector('#articulos h2.sec');if(ht)ht.textContent=A.length+(A.length===1?' artículo':' artículos');
       D.title=COLX.nom+' · El Espectador de historias';
     }
     function pinta(){
-      var L=A.filter(function(a){return !act||a.cats.indexOf(act)>-1;});
+      var L=A.filter(function(a){return !act||a.cats.indexOf(act)>-1||a.serie===act;});
       grid.innerHTML=L.length?L.map(function(a){return '<a class="mini" href="'+esc(a.u)+'"><div class="im"><img alt="" loading="lazy" decoding="async" src="'+esc(foto(a.img,640))+'"></div><div class="etq"><span>'+esc(a.k)+'</span>'+AUD+'</div><h3>'+esc(a.t)+'</h3></a>';}).join(''):'<p class="vacio">Todavía no hay artículos en esta sección. <a href="/">Volver a la portada</a></p>';
     }
-    fil.innerHTML='<button type="button" data-c="" aria-pressed="true">Todos</button>'+CATX.filter(function(c){return A.some(function(a){return a.cats.indexOf(c[0])>-1;});}).map(function(c){return '<button type="button" data-c="'+esc(c[0])+'" aria-pressed="false">'+esc(c[1])+'</button>';}).join('');
+    fil.innerHTML='<button type="button" data-c="" aria-pressed="true">Todos</button>'+CATX.filter(function(c){return A.some(function(a){return a.cats.indexOf(c[0])>-1||a.serie===c[0];});}).map(function(c){return '<button type="button" data-c="'+esc(c[0])+'" aria-pressed="false">'+esc(c[1])+'</button>';}).join('');
     fil.addEventListener('click',function(e){var b=e.target.closest('button');if(!b)return;act=b.getAttribute('data-c');[].forEach.call(fil.querySelectorAll('button'),function(x){x.setAttribute('aria-pressed',x===b?'true':'false');});pinta();});
     pinta();
 
