@@ -20,7 +20,7 @@
     "modulos/aura/aura.js": "sha384-KHD0qGCFBH/BIoHNI3891ocPNG2G4XuD8byvzRAKls4OCRr5hrMsmtryZXf7B0ql",
     "modulos/buscador/buscador.js": "sha384-Fm/o3JSy1ADe5AXBwHiH+j/s07YVOE9JluD6/YOj8KraMOISLIPBmVmmk+MbRako",
     "modulos/diseno/diseno.css": "sha384-NH7txxb5nqZBbY5KZwZphU8OQw79TBKJqNEuksutdk9h7GResA7xUCXH2ibP7Qks",
-    "modulos/diseno/moderno.css": "sha384-qswRT4AJB7TzwPraFL0KVqhw8N0f/3y00+dUuB9dseJ7FJjWg3XfZhnBRXbnK7QK",
+    "modulos/diseno/moderno.css": "sha384-CS+rret+ppaF2eK6/sb5GZaASIqFi3xVAN6VgXrE8b3+IsjcYrbxOndvQC8FI6NY",
     "modulos/efectos/efectos.js": "sha384-NYNjt93wkGkrrob18o+CZUVYeF2N6zZqvW/m/98Lcf6n+kuE9KEpjhsPoC5Aa3uL",
     "modulos/extras/arriba.js": "sha384-N2gN+nFhBD5SUV/oBUBDRRPAC/9TSRg1H1EXsA1D2JVUUdGecC8GQMmL+mI6TIxX",
     "modulos/lector/lector.css": "sha384-+Ql6fMFxDdsJlJrBW3iHbmMsKO4LGCguIKjO1sQ9NkHuOLOZuwdOBqBikSnfuzro",
