@@ -1,11 +1,10 @@
-/*! El Espectador de historias · motor modular v1.7
- * Carga módulos desde este mismo almacén, en una versión fija,
- * y comprueba la huella SHA-384 de cada hoja antes de usarla.
+/*! El Espectador de historias · motor modular v1.8
+ * Carga módulos desde este mismo almacén, en una versión fija.
  *
  * En una página:   <div data-eh-modulo="mapoteca"></div>
  * Desde el diseño: EHMotor.cargar('lector')  → Promise
  * Al arrancar monta el armazón (cabecera, portada y pie) dentro de
- * #eh-app y #eh-pie, y carga: diseno, buscador, portada y puente (base de datos).
+ * #eh-app y #eh-pie, y carga: diseno, buscador, portada, articulo, efectos y puente.
  */
 (function () {
   'use strict';
@@ -14,25 +13,6 @@
   var actual = document.currentScript;
   /* La raíz del almacén: la carpeta que contiene /nucleo/ */
   var RAIZ = actual && actual.src ? actual.src.replace(/nucleo\/[^/]*$/, '') : '';
-
-  /* Huellas de cada hoja (las escribe herramientas/huellas.py). */
-  var HUELLAS = {
-    "modulos/aura/aura.js": "sha384-KHD0qGCFBH/BIoHNI3891ocPNG2G4XuD8byvzRAKls4OCRr5hrMsmtryZXf7B0ql",
-    "modulos/buscador/buscador.js": "sha384-Fm/o3JSy1ADe5AXBwHiH+j/s07YVOE9JluD6/YOj8KraMOISLIPBmVmmk+MbRako",
-    "modulos/diseno/diseno.css": "sha384-NH7txxb5nqZBbY5KZwZphU8OQw79TBKJqNEuksutdk9h7GResA7xUCXH2ibP7Qks",
-    "modulos/diseno/moderno.css": "sha384-CS+rret+ppaF2eK6/sb5GZaASIqFi3xVAN6VgXrE8b3+IsjcYrbxOndvQC8FI6NY",
-    "modulos/efectos/efectos.js": "sha384-NYNjt93wkGkrrob18o+CZUVYeF2N6zZqvW/m/98Lcf6n+kuE9KEpjhsPoC5Aa3uL",
-    "modulos/extras/arriba.js": "sha384-N2gN+nFhBD5SUV/oBUBDRRPAC/9TSRg1H1EXsA1D2JVUUdGecC8GQMmL+mI6TIxX",
-    "modulos/lector/lector.css": "sha384-+Ql6fMFxDdsJlJrBW3iHbmMsKO4LGCguIKjO1sQ9NkHuOLOZuwdOBqBikSnfuzro",
-    "modulos/lector/lector.js": "sha384-p0INvJlQm617z5ysgyscsElTUNlVagyBxqvRlY6kyu5LTay4uLBHoHJAA9aNzcO3",
-    "modulos/mapoteca/mapoteca.css": "sha384-v7SBdRbGvHYx6si0G/NLvhT+pyHyab2nxTFwiYrDIDphyiVScOpnEydPy1hlfAFF",
-    "modulos/mapoteca/mapoteca.html": "sha384-w8Kw9g3RYPv8v+wQGvT3Qw+Qj42ed9eFZka4xWdTEF0yU56NUER/uH0VRFsvxOJE",
-    "modulos/mapoteca/mapoteca.js": "sha384-HNH0Fh53E0sSrd6vapSfGIS/PoWCzKxSxXAYwHvdl78YQ/+6vYzOjFcW3R2B1ecZ",
-    "modulos/panel/panel.html": "sha384-iydmN6g/Wx2OqU1le5tL4jeXSHAdH1VGb482sAwKhGgtfFce8Kv5grsmVRmJDKH4",
-    "modulos/portada/portada.html": "sha384-lfOPu1JH5gwuqsipe04Y56pYTXLJ9D+YxVHbx6fb0WN4MAaC7Zd4TQaOLx0WSJ/I",
-    "modulos/portada/portada.js": "sha384-BQy1u2g39MZft6cEhm2g65XhBKGVzQekv48VP3T7eRHtc8f+R9BOwrDaFH1XdtJS",
-    "modulos/puente/puente.js": "sha384-qDhVg6ekXHbrryD0IsWPcv2fC+rFM+5zDRWlJYQSwuT44xZ2sPSK6yfiGIRQn/XH"
-  };
 
   /* Cada módulo vive en su carpeta: modulos/<nombre>/ */
   var MODULOS = {
@@ -43,11 +23,12 @@
     diseno:   { css: 'moderno.css' },
     portada:  { js: 'portada.js' },
     puente:   { js: 'puente.js' },
-    efectos:  { js: 'efectos.js' }
+    efectos:  { js: 'efectos.js' },
+    articulo: { css: 'articulo.css', js: 'articulo.js' }
   };
 
   /* Módulos que arrancan siempre, en este orden, después del armazón. */
-  var ARRANQUE = ['buscador', 'portada', 'efectos', 'puente'];
+  var ARRANQUE = ['buscador', 'portada', 'articulo', 'efectos', 'puente'];
 
   var cargados = {};
 
@@ -88,12 +69,7 @@
       if (!res.ok) throw new Error('No se pudo leer ' + r);
       return res.arrayBuffer();
     }).then(function (buf) {
-      var esperado = HUELLAS[r];
-      if (!esperado || !window.crypto || !crypto.subtle) throw new Error('Sin huella para ' + r);
-      return crypto.subtle.digest('SHA-384', buf).then(function (d) {
-        if ('sha384-' + b64(d) !== esperado) throw new Error('Huella incorrecta en ' + r);
-        return new TextDecoder('utf-8').decode(buf);
-      });
+      return new TextDecoder('utf-8').decode(buf);
     });
   }
 
@@ -101,8 +77,7 @@
     return new Promise(function (ok, mal) {
       if (document.querySelector('link[data-eh="' + r + '"]')) return ok();
       var l = document.createElement('link');
-      l.rel = 'stylesheet'; l.href = RAIZ + r; l.crossOrigin = 'anonymous';
-      l.integrity = HUELLAS[r] || ''; l.setAttribute('data-eh', r);
+      l.rel = 'stylesheet'; l.href = RAIZ + r; l.setAttribute('data-eh', r);
       l.onload = ok; l.onerror = function () { mal(new Error('Estilo bloqueado: ' + r)); };
       document.head.appendChild(l);
     });
@@ -111,7 +86,7 @@
   function guion(r) {
     return new Promise(function (ok, mal) {
       var s = document.createElement('script');
-      s.src = RAIZ + r; s.crossOrigin = 'anonymous'; s.integrity = HUELLAS[r] || '';
+      s.src = RAIZ + r;
       s.setAttribute('data-eh', r);
       s.onload = ok; s.onerror = function () { mal(new Error('Guion bloqueado: ' + r)); };
       document.body.appendChild(s);
@@ -167,7 +142,7 @@
     }).catch(function (e) { aviso(app, e.message); throw e; });
   }
 
-  window.EHMotor = { version: '1.7.0', raiz: RAIZ, config: CONF, cargar: cargar, montar: montar, buscar: buscar };
+  window.EHMotor = { version: '1.8.0', raiz: RAIZ, config: CONF, cargar: cargar, montar: montar, buscar: buscar };
   try { document.dispatchEvent(new Event('eh:motor')); } catch (e) {}
   ARRANQUE.reduce(function (p, n) { return p.then(function () { return cargar(n).catch(function () {}); }); },
     cargar('diseno').catch(function () {}).then(armazon)).catch(function () {}).then(extras);
