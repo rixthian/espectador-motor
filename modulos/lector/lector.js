@@ -227,4 +227,27 @@ textos();
 /* Sitio traducido: la version inglesa y la sigla nunca pasan por el traductor; en ingles se muestra la version propia */
 if(GT){[].forEach.call(raiz.querySelectorAll('.sl-sigla'),function(e){e.setAttribute('translate','no');e.classList.add('notranslate');});if(V.en){V.en.setAttribute('translate','no');V.en.classList.add('notranslate');}}
 if(GT==='en'&&V.en){raiz.setAttribute('translate','no');raiz.classList.add('notranslate');if(lang!=='en')cambiaIdioma();}else if(lee('sbz_lang')==='en'&&V.en&&lang!=='en'){cambiaIdioma();}
+/* Saltos dentro del articulo (indice de capitulos, notas): el desplazamiento suave se quedaba corto porque
+   las fotos de mas arriba terminan de cargar durante el viaje y empujan el destino. Al acabar, se corrige. */
+(function(){
+ var reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+ function tapa(){var m=0;[].forEach.call(document.querySelectorAll('.sl-barra,.cf-nav'),function(e){var cs=getComputedStyle(e);if((cs.position!=='sticky'&&cs.position!=='fixed')||!e.offsetParent)return;var z=(e.getBoundingClientRect().height/(e.offsetHeight||1))||1;var b=((parseFloat(cs.top)||0)+e.offsetHeight)*z;if(b>m)m=b;});return m+12;}
+ function destino(t){return t.getBoundingClientRect().top+window.pageYOffset-tapa();}
+ function salta(t){
+  var reloj=0,vueltas=0;
+  function corrige(){window.removeEventListener('scroll',quieto);var d=t.getBoundingClientRect().top-tapa();
+   if(Math.abs(d)>3&&vueltas<8){vueltas++;window.scrollTo({top:destino(t),behavior:'auto'});setTimeout(corrige,250);}}
+  function quieto(){clearTimeout(reloj);reloj=setTimeout(corrige,160);}
+  window.addEventListener('scroll',quieto,{passive:true});
+  window.scrollTo({top:destino(t),behavior:reduce?'auto':'smooth'});quieto();
+ }
+ raiz.addEventListener('click',function(ev){
+  if(ev.defaultPrevented||ev.button!==0||ev.metaKey||ev.ctrlKey||ev.shiftKey||ev.altKey)return;
+  var a=ev.target.closest?ev.target.closest('a[href^="#"]'):null;if(!a)return;
+  var id=decodeURIComponent(a.getAttribute('href').slice(1));if(!id)return;
+  var t=document.getElementById(id);if(!t||!raiz.contains(t))return;
+  ev.preventDefault();salta(t);
+  try{history.replaceState(null,'','#'+id);}catch(e){}
+ });
+})();
 })();
