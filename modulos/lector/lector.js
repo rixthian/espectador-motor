@@ -250,4 +250,33 @@ if(GT==='en'&&V.en){raiz.setAttribute('translate','no');raiz.classList.add('notr
   try{history.replaceState(null,'','#'+id);}catch(e){}
  });
 })();
+/* Modo oscuro: algunos cuadros de los articulos traen su propio fondo claro (o letra oscura fija) y en modo
+   oscuro quedaban ilegibles. Este guardian mide el contraste de cada texto y, si no se lee, le pone una tinta
+   legible. Al volver al modo claro todo queda como estaba. */
+(function(){
+ var MARCA='data-eh-tinta',OSC={r:28,g:26,b:23},CLA={r:236,g:232,b:223};
+ function rgb(c){var m=c&&c.match(/rgba?\(([^)]+)\)/);if(!m)return null;var a=m[1].split(/\s*,\s*/).map(parseFloat);return {r:a[0],g:a[1],b:a[2],a:a.length>3?a[3]:1};}
+ function lum(c){function f(v){v/=255;return v<=0.03928?v/12.92:Math.pow((v+0.055)/1.055,2.4);}return 0.2126*f(c.r)+0.7152*f(c.g)+0.0722*f(c.b);}
+ function contraste(a,b){var x=lum(a),y=lum(b);return (Math.max(x,y)+0.05)/(Math.min(x,y)+0.05);}
+ function degradado(s){var m=s.match(/rgba?\([^)]+\)/g);if(!m||/url\(/.test(s))return null;var r=0,g=0,bl=0,n=0;m.forEach(function(x){var c=rgb(x);if(c&&c.a>0.5){r+=c.r;g+=c.g;bl+=c.b;n++;}});return n?{r:r/n,g:g/n,b:bl/n,a:1}:null;}
+ function fondo(e){for(var a=e;a&&a.nodeType===1;a=a.parentElement){var cs=getComputedStyle(a);if(cs.backgroundImage&&cs.backgroundImage!=='none'){var d=degradado(cs.backgroundImage);if(d)return d;if(/url\(/.test(cs.backgroundImage))return null;}var c=rgb(cs.backgroundColor);if(c&&c.a>0.5)return c;}return {r:255,g:255,b:255,a:1};}
+ function oscuro(){var c=fondo(document.body);return !!(c&&lum(c)<0.2);}
+ function repara(){
+  [].forEach.call(document.querySelectorAll('['+MARCA+']'),function(e){var v=e.getAttribute(MARCA).split('|');e.style.removeProperty('color');if(v[0])e.style.setProperty('color',v[0],v[1]||'');e.removeAttribute(MARCA);});
+  if(!oscuro())return;
+  var zona=raiz.closest('.post-body')||raiz;
+  [].forEach.call(zona.querySelectorAll('*'),function(e){
+   if(e.namespaceURI!=='http://www.w3.org/1999/xhtml'||/^(SCRIPT|STYLE|IMG|VIDEO|CANVAS|IFRAME|NOSCRIPT)$/.test(e.tagName))return;
+   var propio=false;for(var n=e.firstChild;n;n=n.nextSibling){if(n.nodeType===3&&/\S\S/.test(n.nodeValue)){propio=true;break;}}if(!propio)return;
+   var fg=rgb(getComputedStyle(e).color),bg=fondo(e);if(!fg||!bg||contraste(fg,bg)>=3)return;
+   var tinta=contraste(OSC,bg)>=contraste(CLA,bg)?'rgb(28,26,23)':'rgb(236,232,223)';
+   e.setAttribute(MARCA,e.style.getPropertyValue('color')+'|'+e.style.getPropertyPriority('color'));
+   e.style.setProperty('color',tinta,'important');
+  });
+ }
+ var reloj=0;function luego(){clearTimeout(reloj);reloj=setTimeout(repara,450);}
+ try{new MutationObserver(luego).observe(document.documentElement,{attributes:true,attributeFilter:['data-tema']});}catch(e){}
+ if(window.matchMedia){var mq=window.matchMedia('(prefers-color-scheme: dark)');if(mq.addEventListener)mq.addEventListener('change',luego);else if(mq.addListener)mq.addListener(luego);}
+ luego();setTimeout(repara,2500);
+})();
 })();
