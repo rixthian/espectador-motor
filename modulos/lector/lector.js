@@ -78,6 +78,11 @@ function normaliza(s){
   return s;
 }
 function textoVoz(el){if(vl()===lang)return el.getAttribute('data-voz')||el.textContent;if(el.classList.contains('sl-cap'))return [].map.call(el.children,function(c){return c.textContent.trim();}).filter(Boolean).join('. ')+'.';return el.textContent;}
+/* Hebreo dentro del texto: esos trozos se leen con una voz hebrea (Carmit en Apple; Avri o Hila en Edge).
+   Si el aparato no tiene voz hebrea, se saltan en silencio en vez de leerlos mal. */
+var HEB=/[\u0590-\u05FF\uFB1D-\uFB4F]/,HEBRUN=/[\u0590-\u05FF\uFB1D-\uFB4F](?:[\u0590-\u05FF\uFB1D-\uFB4F\u05BE\u05F3\u05F4'"\s.,;:!?()\-]*[\u0590-\u05FF\uFB1D-\uFB4F\u05F3\u05F4])?/g;
+function conHebreo(arr){var out=[];arr.forEach(function(s){if(!HEB.test(s)){out.push(s);return;}var ult=0;s.replace(HEBRUN,function(m,pos){var a=s.slice(ult,pos);if(/[^\s.,;:!?()\-]/.test(a))out.push(a.trim());out.push('\u0001'+m.trim());ult=pos+m.length;return m;});var z=s.slice(ult);if(/[^\s.,;:!?()\-]/.test(z))out.push(z.trim());});return out;}
+var VHE=null;function vozHe(){if(VHE)return VHE;var vs=ss.getVoices().filter(function(v){return /^(he|iw)([-_]|$)/i.test(v.lang)&&!ROBOT.test(limpiaVoz(v));});vs.sort(function(a,b){var q=/natural|online|neural|premium|enhanced/i;return (q.test(b.name)?1:0)-(q.test(a.name)?1:0);});VHE=vs[0]||null;return VHE;}
 function trozos(s){
   var fr=s.match(/[^.!?;:]+[.!?;:]*\s*/g)||[s],out=[],cur='';
   fr.forEach(function(f){
@@ -95,9 +100,10 @@ function pintaPlay(){var h=estado==='hablando';bPlay.innerHTML=h?ICO.pausa:ICO.p
 function hablar(){
   if(estado!=='hablando')return;
   var el=els[idx];if(!el){detener();return;}
-  if(!partes){partes=trozos(normaliza(textoVoz(el)));pi=0;marca(el);}
+  if(!partes){partes=conHebreo(trozos(normaliza(textoVoz(el))));pi=0;marca(el);}
   if(pi>=partes.length){idx++;partes=null;hablar();return;}
-  var u=new UT(partes[pi]);u.lang=voz?voz.lang:(vl()==='es'?'es-ES':vl()==='en'?'en-GB':vl());if(voz)u.voice=voz;u.rate=vel;
+  var txt=partes[pi],vh=null;if(txt.charAt(0)==='\u0001'){txt=txt.slice(1);vh=vozHe();if(!vh){pi++;hablar();return;}}
+  var u=new UT(txt);if(vh){u.lang=vh.lang;u.voice=vh;}else{u.lang=voz?voz.lang:(vl()==='es'?'es-ES':vl()==='en'?'en-GB':vl());if(voz)u.voice=voz;}u.rate=vel;
   var mio=++token;
   u.onstart=function(){habla=true;};
   u.onend=function(){if(mio!==token||estado!=='hablando')return;pi++;hablar();};
@@ -278,5 +284,22 @@ if(GT==='en'&&V.en){raiz.setAttribute('translate','no');raiz.classList.add('notr
  try{new MutationObserver(luego).observe(document.documentElement,{attributes:true,attributeFilter:['data-tema']});}catch(e){}
  if(window.matchMedia){var mq=window.matchMedia('(prefers-color-scheme: dark)');if(mq.addEventListener)mq.addEventListener('change',luego);else if(mq.addListener)mq.addListener(luego);}
  luego();setTimeout(repara,2500);
+})();
+/* Hebreo en pantalla: las palabras y citas en hebreo se marcan solas (lang="he", dir="rtl") para que se vean
+   en su sentido, con una letra hebrea a juego (Frank Ruhl Libre; solo se descarga si la pagina tiene hebreo). */
+(function(){
+ if(!HEB.test(raiz.textContent))return;
+ var F='https://cdn.jsdelivr.net/npm/@fontsource/frank-ruhl-libre@5.2.5/files/frank-ruhl-libre-hebrew-',R="unicode-range:U+0307-0308,U+0590-05FF,U+200C-2010,U+20AA,U+25CC,U+FB1D-FB4F}";
+ var st=document.createElement('style');
+ st.textContent="@font-face{font-family:'EH Hebreo';font-weight:400;font-style:normal;font-display:swap;src:url("+F+"400-normal.woff2) format('woff2');"+R+
+  "@font-face{font-family:'EH Hebreo';font-weight:700;font-style:normal;font-display:swap;src:url("+F+"700-normal.woff2) format('woff2');"+R+
+  ".sbz-lec [lang=he]{--fb:'EH Hebreo','Frank Ruhl Libre','Times New Roman',serif;--fh:'EH Hebreo','Frank Ruhl Libre','Times New Roman',serif;font-size:1.12em}.sbz-lec [lang=he] [lang=he]{font-size:1em}"+
+  "body.eh-item .sbz-lec [lang=he]:not(svg):not(svg *){font-family:'EH Hebreo','Frank Ruhl Libre','Times New Roman',serif!important}"+
+  ".sbz-lec p[lang=he],.sbz-lec li[lang=he],.sbz-lec blockquote[lang=he],.sbz-lec figcaption[lang=he],.sbz-lec h2[lang=he],.sbz-lec h3[lang=he],.sbz-lec td[lang=he]{text-align:right}";
+ document.head.appendChild(st);
+ [].forEach.call(raiz.querySelectorAll('p,li,blockquote,figcaption,h2,h3,h4,td,th,dd,dt'),function(b){if(b.closest('[lang=he],[dir=rtl]'))return;var x=b.textContent,he=(x.match(/[\u0590-\u05FF\uFB1D-\uFB4F]/g)||[]).length,la=(x.match(/[A-Za-z\u00C0-\u00FF]/g)||[]).length;if(he>8&&he>la*1.5){b.setAttribute('lang','he');b.setAttribute('dir','rtl');}});
+ var w=document.createTreeWalker(raiz,NodeFilter.SHOW_TEXT,{acceptNode:function(n){if(!HEB.test(n.nodeValue))return NodeFilter.FILTER_REJECT;var p=n.parentElement;if(!p||p.closest('script,style,textarea,[lang=he],[contenteditable]'))return NodeFilter.FILTER_REJECT;return NodeFilter.FILTER_ACCEPT;}}),nodos=[],n;
+ while((n=w.nextNode()))nodos.push(n);
+ nodos.forEach(function(n){var s=n.nodeValue,f=document.createDocumentFragment(),ult=0;s.replace(HEBRUN,function(m,pos){if(pos>ult)f.appendChild(document.createTextNode(s.slice(ult,pos)));var sp=document.createElement('span');sp.setAttribute('lang','he');sp.setAttribute('dir','rtl');sp.textContent=m;f.appendChild(sp);ult=pos+m.length;return m;});if(ult<s.length)f.appendChild(document.createTextNode(s.slice(ult)));n.parentNode.replaceChild(f,n);});
 })();
 })();
