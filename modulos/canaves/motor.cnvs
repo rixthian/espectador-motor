@@ -10,10 +10,10 @@ font ui_bold     = "Public Sans" weight 600 file "public-sans-latin-600-normal.w
 
 install calligraphy
 
-# The page opens up on big screens: text keeps a readable measure,
-# pictures go wide, and everything grows on desktops, TVs and consoles.
+# The page opens up on big screens: the text column is 900 px wide,
+# pictures go wider, and everything grows on desktops, TVs and consoles.
 layout
-  content 736
+  content 900
   wide 1100
   gutter 16 to 48
   grow from 1280 to 3840 by 2.4
@@ -36,6 +36,8 @@ theme main
   scale article
   scale title
   scale home
+  measure article
+  measure title
   wide figure
   wide title
 
