@@ -45,15 +45,21 @@ document.body.appendChild(pl);
 var plEt=pl.querySelector('.sl-pl-et'),plTit=pl.querySelector('.sl-pl-tit'),plBar=pl.querySelector('.sl-pl-barra span'),bPlay=pl.querySelector('[data-a="play"]'),selVel=pl.querySelector('[data-a="vel"]'),selVoz=pl.querySelector('[data-a="voz"]');
 var VS=[],voz=null,vel=parseFloat(lee('sl-vel'))||1;selVel.value=String(vel);if(selVel.value!==String(vel)){vel=1;selVel.value='1';}
 var els=[],idx=0,partes=null,pi=0,estado='parado',token=0,actual=null,habla=false;
+/* Voces: primero las naturales (Paulina, Mónica, las «Natural» de Edge, Google...); las voces de juguete
+   de Apple (Eddy, Flo, Grandma...) suenan robóticas y solo se usan si no hay otra. */
+var ROBOT=/^(Eddy|Flo|Grandma|Grandpa|Reed|Rocko|Sandy|Shelley|Albert|Bad News|Bahh|Bells|Boing|Bubbles|Cellos|Good News|Jester|Junior|Kathy|Fred|Organ|Ralph|Superstar|Trinoids|Whisper|Wobble|Zarvox)\b/i;
+var BUENAS=/^(Paulina|M[oó]nica|Juan|Jorge|Diego|Francisca|Marisol|Ang[eé]lica|Isabela|Carlos|Soledad|Paola|Sebasti[aá]n|Dalia|Elvira|[AÁ]lvaro|Daniel|Samantha|Karen|Moira|Serena|Kate|Oliver|Ava|Allison|Susan|Tom|Evan|Nathan|Zoe|Libby|Sonia|Ryan|Jenny|Aria|Guy)\b/i;
+function limpiaVoz(v){return v.name.replace(/^(Microsoft|Google|Apple)\s+/i,'');}
 function puntua(v){var g=v.lang.replace('_','-').toLowerCase(),p=50;
   if(vl()==='es'){if(g==='es-ve')p=100;else if(/^es-(419|us|mx|co|pe|cl|ar|ec|pa|do|pr|cu|uy|bo|py|cr|gt|hn|ni|sv)$/.test(g))p=80;else if(g==='es-es')p=60;}
   else if(lang==='en'){if(g==='en-gb')p=100;else if(g==='en-us')p=80;else if(/^en-(ie|au|nz|za|in|ca)$/.test(g))p=70;}
-  if(/natural|online|neural|google|premium|enhanced|mejorada/i.test(v.name))p+=12;return p;}
+  if(/natural|online|neural|google|premium|enhanced|mejorada/i.test(v.name))p+=12;
+  var n=limpiaVoz(v);if(ROBOT.test(n))p-=60;else if(BUENAS.test(n))p+=25;return p;}
 function nombreVoz(v){return v.name.replace(/^(Microsoft|Google|Apple)\s+/,'').replace(/\s*\(Natural\)/,'').replace(/\s+Online/,'').replace(/\s+-\s+.*$/,'')+' · '+v.lang.replace('_','-');}
 function llenaVoces(){
   if(!ss){VS=[];return;}
   var re=new RegExp('^'+vl()+'([-_]|$)','i');
-  VS=ss.getVoices().filter(function(v){return re.test(v.lang);});VS.sort(function(a,b){return puntua(b)-puntua(a);});
+  VS=ss.getVoices().filter(function(v){return re.test(v.lang);});var bue=VS.filter(function(v){return !ROBOT.test(limpiaVoz(v));});if(bue.length)VS=bue;VS.sort(function(a,b){return puntua(b)-puntua(a);});
   var pref=lee('sl-voz-'+vl());voz=null;
   for(var i=0;i<VS.length;i++){if(VS[i].name===pref){voz=VS[i];break;}}
   if(!voz)voz=VS[0]||null;
