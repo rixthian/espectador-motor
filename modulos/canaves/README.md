@@ -8,7 +8,8 @@ a partir de `motor.cnvs`. No se edita a mano.
   que cada entrada trae dentro.
 - En pantallas grandes el artículo, el título y la portada crecen por pasos (`zoom`), de
   1280 px a 3840 px de ancho, hasta 2,4 veces. Sirve para escritorio, televisores y consolas.
-- Desde 896 px de ancho, las figuras y el título salen de la columna hasta el ancho amplio.
+- La columna del texto y el título miden como máximo 900 px (`content 900` con `measure`).
+- Desde 1060 px de ancho, las figuras y el título salen de la columna hasta el ancho amplio (1100 px).
 - Navegadores sin `@layer` ignoran el bloque entero y ven el diseño de antes.
 
 ## Cómo llega al blog
